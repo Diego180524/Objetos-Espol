@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Guardias</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Panel de Seguridad ESPOL</h1>
+        <p>Gestión de objetos perdidos y encontrados.</p>
+
+        <table border="1" style="width: 100%; text-align: left; margin-bottom: 20px; border-collapse: collapse;">
+            <tr style="background-color: #003366; color: white;">
+                <th style="padding: 8px;">Objeto</th>
+                <th style="padding: 8px;">Lugar</th>
+                <th style="padding: 8px;">Estado</th>
+                <th style="padding: 8px;">Acción</th>
+            </tr>
+            <tr>
+                <td style="padding: 8px;">Cartuchera negra</td>
+                <td style="padding: 8px;">FCSH</td>
+                <td style="padding: 8px; color: red;">Perdido</td>
+                <td style="padding: 8px;"><button style="padding: 5px 10px; font-size: 12px; background-color: #28a745;">Marcar Entregado</button></td>
+            </tr>
+            <tr>
+                <td style="padding: 8px;">Audífonos</td>
+                <td style="padding: 8px;">FIEC</td>
+                <td style="padding: 8px; color: green;">Encontrado</td>
+                <td style="padding: 8px;"><button style="padding: 5px 10px; font-size: 12px; background-color: #28a745;">Marcar Entregado</button></td>
+            </tr>
+        </table>
+
+        <h3>Mapa General de Reportes</h3>
+        <div id="mapaGuardia" style="height: 300px; width: 100%; border-radius: 10px; margin-bottom: 20px;"></div>
+
+        <a href="index.html">Volver al inicio</a>
+    </div>
+
+    <script>
+        // Coordenadas aproximadas del centro de la ESPOL
+        const mapa = L.map('mapaGuardia').setView([-2.147, -79.966], 15);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(mapa);
+
+        // Pines simulados para ver cómo queda
+        L.marker([-2.148, -79.967]).addTo(mapa).bindPopup("Cartuchera negra (FCSH)");
+        L.marker([-2.145, -79.965]).addTo(mapa).bindPopup("Audífonos (FIEC)");
+    </script>
+</body>
+</html>
