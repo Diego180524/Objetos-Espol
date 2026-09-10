@@ -3,14 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Objetos ESPOL</title>
+    <title>Menú - Objetos ESPOL</title>
     <!-- Esta línea conecta el diseño -->
     <link rel="stylesheet" href="style.css"> 
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-image: url('fondo-menu.png'); /* Asegúrate de que tu imagen se llame así */
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 33, 66, 0.45); /* Azul institucional semitransparente */
+            backdrop-filter: blur(2px); /* Desenfoque suave */
+            z-index: 1;
+        }
+
+        .container {
+            position: relative;
+            z-index: 2;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
         <h1>Objetos ESPOL</h1>
-        <p>Sistema de objetos perdidos y encontrados</p>
+        <p style="color: #666; margin-bottom: 20px;">Sistema de objetos perdidos y encontrados</p>
 
         <!-- Alerta de Match Automático -->
         <div style="background-color: #fff3cd; color: #856404; padding: 15px; border-radius: 5px; border: 1px solid #ffeeba; margin-bottom: 20px; text-align: left;">
@@ -20,7 +57,13 @@
             <button style="background-color: #6c757d; color: white; border: none; padding: 5px 10px; cursor: pointer; border-radius: 3px;">No es mía</button>
         </div>
 
-        <button onclick="window.location.href='estudiante.html'">Estudiante</button>
+        <div style="display: flex; gap: 10px; justify-content: center;">
+            <button onclick="window.location.href='estudiante.html'" style="background-color: #003366; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; flex: 1;">Estudiante</button>
+            <button onclick="window.location.href='guardia.html'" style="background-color: #003366; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; flex: 1;">Personal autorizado</button>
+        </div>
+    </div>
+</body>
+</html>
         <button onclick="window.location.href='guardia.html'">Personal autorizado</button>
     </div>
 </body>
