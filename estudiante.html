@@ -2,13 +2,55 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Panel Estudiante</title>
+    <link rel="stylesheet" href="style.css"> 
 </head>
 <body>
-    <h1>Panel de Estudiante</h1>
-    <p>Aquí pondremos el formulario para reportar objetos perdidos.</p>
-    
-    <!-- Botón para regresar al inicio -->
-    <a href="index.html">Volver al inicio</a>
+    <div class="container">
+        <h1>Reportar Objeto Perdido</h1>
+        <p>Llena los datos para que todos en la ESPOL te ayuden a buscarlo.</p>
+
+        <form>
+            <label>¿Qué perdiste?</label><br>
+            <select>
+                <option>Cartuchera</option>
+                <option>Tomatodo</option>
+                <option>Abrigo</option>
+                <option>Cédula / Carné</option>
+                <option>Audífonos</option>
+                <option>Otros</option>
+            </select><br><br>
+
+            <label>Descripción detallada:</label><br>
+            <textarea rows="3" placeholder="Ej: Es negra con cierre rojo..."></textarea><br><br>
+
+            <label>¿Dónde fue la última vez que lo viste?</label><br>
+            <select>
+                <option>FCSH</option>
+                <option>FIEC</option>
+                <option>FCSNM</option>
+                <option>FIMCP</option>
+                <option>FICT</option>
+                <option>FIMAR</option>
+                <option>FADCOM</option>
+                <option>FCV</option>
+                <option>CELEX</option>
+                <option>Biblioteca</option>
+                <option>Estación de buses</option>
+                <option>Sweet & Coffee (FCSH)</option>
+                <option>PARCON</option>
+                <option>Otro lugar</option>
+            </select><br><br>
+
+            <label>Sube una foto (si tienes):</label><br>
+            <input type="file" accept="image/*"><br><br>
+
+            <button type="button">Publicar Reporte</button>
+        </form>
+        
+        <br>
+        <a href="index.html">Volver al inicio</a>
+    </div>
 </body>
 </html>
