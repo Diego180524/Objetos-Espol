@@ -11,7 +11,7 @@ body {
 }
 
 h1 {
-    color: #003366; /* Azul ESPOL */
+    color: #003366;
     margin-bottom: 10px;
 }
 
@@ -20,7 +20,7 @@ p {
     margin-bottom: 20px;
 }
 
-/* Contenedores generales */
+/* Contenedores generales adaptables */
 .container {
     background-color: white;
     padding: 30px;
@@ -30,6 +30,7 @@ p {
     max-width: 450px;
     width: 90%;
     box-sizing: border-box;
+    margin: auto;
 }
 
 /* Botones institucionales generales */
@@ -51,10 +52,8 @@ button:hover {
 }
 
 /* ==========================================
-   2. FONDOS ESPECÍFICOS POR PÁGINA (¡Intactos!)
+   2. FONDOS ESPECÍFICOS POR PÁGINA
    ========================================== */
-
-/* Fondo para index.html (Login) */
 body.body-index {
     height: 100vh;
     display: flex;
@@ -64,6 +63,7 @@ body.body-index {
     background-size: cover;
     background-position: center;
     position: relative;
+    padding: 15px;
 }
 
 body.body-index::before {
@@ -81,9 +81,10 @@ body.body-index::before {
 body.body-index .container {
     position: relative;
     z-index: 2;
+    width: 100%;
+    max-width: 380px;
 }
 
-/* Fondo para menu.html */
 body.body-menu {
     height: 100vh;
     display: flex;
@@ -93,6 +94,7 @@ body.body-menu {
     background-size: cover;
     background-position: center;
     position: relative;
+    padding: 15px;
 }
 
 body.body-menu::before {
@@ -109,12 +111,12 @@ body.body-menu::before {
 body.body-menu .container {
     position: relative;
     z-index: 2;
-    max-width: 500px;
+    max-width: 450px;
+    width: 100%;
 }
 
-/* Fondo para estudiante.html */
 body.body-estudiante {
-    padding: 20px;
+    padding: 15px;
     background-image: url('fondo-estudiante.png');
     background-size: cover;
     background-position: center;
@@ -125,15 +127,15 @@ body.body-estudiante {
 }
 
 /* ==========================================
-   3. COMPONENTES DEL MENÚ (Chat Flotante)
+   3. CHAT FLOTANTE
    ========================================== */
 #chat-box {
     display: none;
     position: fixed;
-    right: 20px;
-    bottom: 20px;
-    width: 320px;
-    height: 400px;
+    right: 15px;
+    bottom: 15px;
+    width: 300px;
+    height: 380px;
     background: white;
     border-radius: 10px;
     box-shadow: 0 5px 25px rgba(0,0,0,0.3);
@@ -176,12 +178,12 @@ body.body-estudiante {
     justify-content: space-between;
     align-items: center;
     background: rgba(255, 255, 255, 0.95);
-    padding: 15px 30px;
+    padding: 12px 20px;
     border-radius: 8px;
     box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-    margin-bottom: 20px;
+    margin-bottom: 15px;
     max-width: 1200px;
-    width: 95%;
+    width: 100%;
     backdrop-filter: blur(5px);
     box-sizing: border-box;
 }
@@ -189,15 +191,15 @@ body.body-estudiante {
 .navbar h2 {
     margin: 0;
     color: #003366;
-    font-size: 20px;
+    font-size: 18px;
 }
 
 .navbar nav a {
     text-decoration: none;
     color: #555;
-    margin-left: 20px;
+    margin-left: 15px;
     font-weight: bold;
-    font-size: 14px;
+    font-size: 13px;
 }
 
 .navbar nav a:hover {
@@ -206,34 +208,36 @@ body.body-estudiante {
 
 .main-layout {
     display: flex;
-    gap: 20px;
+    gap: 15px;
     max-width: 1200px;
-    width: 95%;
+    width: 100%;
     margin: 0 auto;
 }
 
 .form-column {
     flex: 4;
     background: rgba(255, 255, 255, 0.95);
-    padding: 25px;
+    padding: 20px;
     border-radius: 10px;
     box-shadow: 0 8px 25px rgba(0,0,0,0.1);
     backdrop-filter: blur(5px);
+    box-sizing: border-box;
 }
 
 .map-column {
     flex: 6;
     background: rgba(255, 255, 255, 0.95);
-    padding: 25px;
+    padding: 20px;
     border-radius: 10px;
     box-shadow: 0 8px 25px rgba(0,0,0,0.1);
     display: flex;
     flex-direction: column;
     backdrop-filter: blur(5px);
+    box-sizing: border-box;
 }
 
 .form-group {
-    margin-bottom: 15px;
+    margin-bottom: 12px;
     text-align: left;
 }
 
@@ -257,7 +261,7 @@ select, textarea, input[type="text"], input[type="email"], input[type="password"
 .file-drop-box {
     border: 2px dashed #003366;
     background-color: #f8fbff;
-    padding: 20px;
+    padding: 15px;
     text-align: center;
     border-radius: 8px;
     cursor: pointer;
@@ -277,7 +281,7 @@ select, textarea, input[type="text"], input[type="email"], input[type="password"
 #miMapa, #mapaGuardia {
     flex: 1;
     width: 100%;
-    min-height: 400px;
+    min-height: 350px;
     border-radius: 8px;
     border: 1px solid #ddd;
     margin-top: 10px;
@@ -312,26 +316,49 @@ select, textarea, input[type="text"], input[type="email"], input[type="password"
 }
 
 /* ==========================================
-   5. DISEÑO RESPONSIVO (PARA CELULARES)
+   5. DISEÑO RESPONSIVO (MEJORADO PARA CELULARES)
    ========================================== */
 @media (max-width: 768px) {
     body {
         height: auto;
         padding: 10px;
+        align-items: stretch;
+    }
+
+    body.body-index, body.body-menu {
+        height: 100vh;
+        align-items: center;
+        padding: 15px;
+    }
+
+    .container {
+        width: 100%;
+        padding: 20px;
+        margin: 0 auto;
     }
 
     .main-layout {
-        flex-direction: column; /* Apila el formulario y el mapa verticalmente */
+        flex-direction: column;
+        gap: 15px;
+        width: 100%;
     }
 
     .navbar {
         flex-direction: column;
-        gap: 10px;
+        gap: 8px;
         text-align: center;
+        width: 100%;
+        padding: 12px;
+    }
+
+    .navbar nav {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
     }
 
     .navbar nav a {
-        margin: 0 10px;
+        margin-left: 0;
     }
 
     #miMapa, #mapaGuardia {
@@ -339,8 +366,12 @@ select, textarea, input[type="text"], input[type="email"], input[type="password"
     }
 
     #chat-box {
-        width: 90%;
-        right: 5%;
+        width: 92%;
+        right: 4%;
         bottom: 10px;
+    }
+
+    table {
+        font-size: 12px;
     }
 }
