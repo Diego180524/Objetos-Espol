@@ -11,9 +11,15 @@
         body {
             margin: 0;
             padding: 20px;
-            background-color: #f4f6f9;
+            /* Aquí ponemos tu nuevo fondo institucional corporativo */
+            background-image: url('fondo-estudiante.png');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
             font-family: sans-serif;
             color: #333;
+            min-height: 100vh;
+            box-sizing: border-box;
         }
 
         /* Barra de navegación superior */
@@ -21,11 +27,15 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: white;
+            background: rgba(255, 255, 255, 0.95);
             padding: 15px 30px;
             border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
             margin-bottom: 20px;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+            backdrop-filter: blur(5px);
         }
 
         .navbar h2 {
@@ -57,21 +67,23 @@
         /* Columna Izquierda: Formulario */
         .form-column {
             flex: 4;
-            background: white;
+            background: rgba(255, 255, 255, 0.95);
             padding: 25px;
             border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            backdrop-filter: blur(5px);
         }
 
         /* Columna Derecha: Mapa e interactividad */
         .map-column {
             flex: 6;
-            background: white;
+            background: rgba(255, 255, 255, 0.95);
             padding: 25px;
             border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
             display: flex;
             flex-direction: column;
+            backdrop-filter: blur(5px);
         }
 
         .form-group {
@@ -254,9 +266,8 @@
         let mapa;
         let marcador;
 
-        // Inicializar mapa centrado en ESPOL por defecto al cargar la página
         window.onload = function() {
-            mapa = L.map('miMapa').setView([-2.1444, -79.9675], 16); // Coordenadas aproximadas ESPOL Gustavo Galindo
+            mapa = L.map('miMapa').setView([-2.1444, -79.9675], 16);
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 attribution: '&copy; OpenStreetMap contributors'
             }).addTo(mapa);
