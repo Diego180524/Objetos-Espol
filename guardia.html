@@ -13,24 +13,45 @@
         <h1>Panel de Seguridad ESPOL</h1>
         <p>Gestión de objetos perdidos y encontrados.</p>
 
+        <!-- Aquí están los filtros nuevos -->
+        <div style="background-color: #f1f4f8; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+            <strong>Filtros:</strong>
+            <select style="margin-left: 10px; padding: 5px;">
+                <option>Todas las ubicaciones</option>
+                <option>FCSH</option>
+                <option>FIEC</option>
+                <option>Biblioteca</option>
+                <option>Sweet & Coffee</option>
+            </select>
+            <select style="margin-left: 10px; padding: 5px;">
+                <option>Todos los estados</option>
+                <option>Perdidos</option>
+                <option>Encontrados</option>
+            </select>
+            <button style="margin-left: 10px; padding: 5px 15px; background-color: #003366; color: white; border: none; border-radius: 4px; cursor: pointer;">Buscar</button>
+        </div>
+
         <table border="1" style="width: 100%; text-align: left; margin-bottom: 20px; border-collapse: collapse;">
             <tr style="background-color: #003366; color: white;">
                 <th style="padding: 8px;">Objeto</th>
                 <th style="padding: 8px;">Lugar</th>
+                <th style="padding: 8px;">Contacto</th>
                 <th style="padding: 8px;">Estado</th>
                 <th style="padding: 8px;">Acción</th>
             </tr>
             <tr>
                 <td style="padding: 8px;">Cartuchera negra</td>
                 <td style="padding: 8px;">FCSH</td>
-                <td style="padding: 8px; color: red;">Perdido</td>
-                <td style="padding: 8px;"><button style="padding: 5px 10px; font-size: 12px; background-color: #28a745;">Marcar Entregado</button></td>
+                <td style="padding: 8px;">0987654321</td>
+                <td style="padding: 8px; color: red; font-weight: bold;">Perdido</td>
+                <td style="padding: 8px;"><button style="padding: 5px 10px; font-size: 12px; background-color: #28a745; color: white; border: none; cursor: pointer;">Entregar</button></td>
             </tr>
             <tr>
-                <td style="padding: 8px;">Audífonos</td>
-                <td style="padding: 8px;">FIEC</td>
-                <td style="padding: 8px; color: green;">Encontrado</td>
-                <td style="padding: 8px;"><button style="padding: 5px 10px; font-size: 12px; background-color: #28a745;">Marcar Entregado</button></td>
+                <td style="padding: 8px;">Carné estudiantil</td>
+                <td style="padding: 8px;">Biblioteca</td>
+                <td style="padding: 8px;">usuario@espol.edu.ec</td>
+                <td style="padding: 8px; color: green; font-weight: bold;">Encontrado</td>
+                <td style="padding: 8px;"><button style="padding: 5px 10px; font-size: 12px; background-color: #28a745; color: white; border: none; cursor: pointer;">Entregar</button></td>
             </tr>
         </table>
 
@@ -41,13 +62,11 @@
     </div>
 
     <script>
-        // Coordenadas aproximadas del centro de la ESPOL
         const mapa = L.map('mapaGuardia').setView([-2.147, -79.966], 15);
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(mapa);
 
-        // Pines simulados para ver cómo queda
-        L.marker([-2.148, -79.967]).addTo(mapa).bindPopup("Cartuchera negra (FCSH)");
-        L.marker([-2.145, -79.965]).addTo(mapa).bindPopup("Audífonos (FIEC)");
+        L.marker([-2.148, -79.967]).addTo(mapa).bindPopup("Cartuchera negra (FCSH) - Perdido");
+        L.marker([-2.146, -79.964]).addTo(mapa).bindPopup("Carné (Biblioteca) - Encontrado");
     </script>
 </body>
 </html>
