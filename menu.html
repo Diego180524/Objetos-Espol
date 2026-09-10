@@ -4,86 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Menú - Objetos ESPOL</title>
-    <!-- Esta línea conecta el diseño -->
+    <!-- Conectado al CSS centralizado -->
     <link rel="stylesheet" href="style.css"> 
-    <style>
-        body {
-            margin: 0;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background-image: url('fondo-menu.png.png');
-            background-size: cover;
-            background-position: center;
-            position: relative;
-        }
-
-        body::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 33, 66, 0.25);
-            z-index: 1;
-        }
-
-        .container {
-            position: relative;
-            z-index: 2;
-            background: white;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
-            max-width: 500px;
-            width: 90%;
-            text-align: center;
-        }
-
-        /* Estilo para el cuadro de chat flotante a la derecha */
-        #chat-box {
-            display: none; /* Oculto por defecto hasta que le den clic */
-            position: fixed;
-            right: 20px;
-            bottom: 20px;
-            width: 320px;
-            height: 400px;
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 5px 25px rgba(0,0,0,0.3);
-            z-index: 10;
-            flex-direction: column;
-            border: 1px solid #ccc;
-        }
-
-        .chat-header {
-            background-color: #003366;
-            color: white;
-            padding: 10px;
-            border-top-left-radius: 10px;
-            border-top-right-radius: 10px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .chat-body {
-            flex: 1;
-            padding: 10px;
-            overflow-y: auto;
-            text-align: left;
-            font-size: 14px;
-        }
-
-        .chat-footer {
-            padding: 10px;
-            border-top: 1px solid #ddd;
-            display: flex;
-            gap: 5px;
-        }
-    </style>
     <script>
         function abrirChat() {
             document.getElementById('chat-box').style.display = 'flex';
@@ -93,7 +15,7 @@
         }
     </script>
 </head>
-<body>
+<body class="body-menu">
     <div class="container">
         <h1>Objetos ESPOL</h1>
         <p>Sistema de objetos perdidos y encontrados</p>
@@ -102,14 +24,13 @@
         <div style="background-color: #fff3cd; color: #856404; padding: 15px; border-radius: 5px; border: 1px solid #ffeeba; margin-bottom: 20px; text-align: left;">
             <strong>¡Buenas noticias! 🚨</strong> Alguien reportó haber encontrado una "Cartuchera negra" en FCSH hace 10 minutos. ¿Es la tuya?
             <br><br>
-            <!-- Al darle clic ahora activa la función abrirChat() -->
             <button onclick="abrirChat()" style="background-color: #28a745; color: white; border: none; padding: 5px 10px; cursor: pointer; border-radius: 3px;">Sí, abrir chat</button>
             <button onclick="this.parentElement.style.display='none'" style="background-color: #6c757d; color: white; border: none; padding: 5px 10px; cursor: pointer; border-radius: 3px;">No es mía</button>
         </div>
 
         <div style="display: flex; gap: 10px; justify-content: center;">
-            <button onclick="window.location.href='estudiante.html'" style="background-color: #003366; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; flex: 1;">Estudiante</button>
-            <button onclick="window.location.href='guardia.html'" style="background-color: #003366; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; flex: 1;">Personal autorizado</button>
+            <button onclick="window.location.href='estudiante.html'" style="flex: 1;">Estudiante</button>
+            <button onclick="window.location.href='guardia.html'" style="flex: 1;">Personal autorizado</button>
         </div>
     </div>
 
@@ -120,11 +41,11 @@
             <button onclick="cerrarChat()" style="background: none; border: none; color: white; font-size: 16px; cursor: pointer;">✕</button>
         </div>
         <div class="chat-body">
-            <p style="background: #f1f0f0; padding: 8px; border-radius: 5px; width: fit-content;">Hola, encontré esta cartuchera cerca de las bancas de FCSH. ¿Pasas retirándola por la garita?</p>
+            <p style="background: #f1f0f0; padding: 8px; border-radius: 5px; width: fit-content; margin: 0;">Hola, encontré esta cartuchera cerca de las bancas de FCSH. ¿Pasas retirándola por la garita?</p>
         </div>
         <div class="chat-footer">
             <input type="text" placeholder="Escribe un mensaje..." style="flex: 1; padding: 5px; border: 1px solid #ccc; border-radius: 3px;">
-            <button style="background-color: #003366; color: white; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer;">Enviar</button>
+            <button style="background-color: #003366; color: white; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer; margin: 0;">Enviar</button>
         </div>
     </div>
 </body>
