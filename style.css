@@ -52,18 +52,25 @@ button:hover {
 }
 
 /* ==========================================
-   2. FONDOS ESPECÍFICOS POR PÁGINA
+   2. FONDOS PROPORCIONALES IDÉNTICOS A LA LAPTOP
    ========================================== */
-body.body-index {
-    height: 100vh;
+body.body-index, body.body-menu {
+    min-height: 100vh;
+    width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
-    background-image: url('fondo-espol.png');
     background-size: cover;
     background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
     position: relative;
-    padding: 15px;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body.body-index {
+    background-image: url('fondo-espol.png');
 }
 
 body.body-index::before {
@@ -86,15 +93,7 @@ body.body-index .container {
 }
 
 body.body-menu {
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     background-image: url('fondo-menu.png.png');
-    background-size: cover;
-    background-position: center;
-    position: relative;
-    padding: 15px;
 }
 
 body.body-menu::before {
@@ -112,18 +111,23 @@ body.body-menu .container {
     position: relative;
     z-index: 2;
     max-width: 450px;
-    width: 100%;
+    width: 90%;
 }
 
 body.body-estudiante {
-    padding: 15px;
+    width: 100%;
+    min-height: 100vh;
     background-image: url('fondo-estudiante.png');
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
+    background-repeat: no-repeat;
     display: flex;
     flex-direction: column;
     align-items: center;
+    margin: 0;
+    padding: 15px;
+    box-sizing: border-box;
 }
 
 /* ==========================================
@@ -316,25 +320,22 @@ select, textarea, input[type="text"], input[type="email"], input[type="password"
 }
 
 /* ==========================================
-   5. DISEÑO RESPONSIVO (MEJORADO PARA CELULARES)
+   5. DISEÑO RESPONSIVO
    ========================================== */
 @media (max-width: 768px) {
     body {
         height: auto;
         padding: 10px;
-        align-items: stretch;
     }
 
     body.body-index, body.body-menu {
-        height: 100vh;
-        align-items: center;
         padding: 15px;
     }
 
     .container {
-        width: 100%;
-        padding: 20px;
-        margin: 0 auto;
+        width: 90%;
+        max-width: 100%;
+        box-sizing: border-box;
     }
 
     .main-layout {
@@ -369,9 +370,5 @@ select, textarea, input[type="text"], input[type="email"], input[type="password"
         width: 92%;
         right: 4%;
         bottom: 10px;
-    }
-
-    table {
-        font-size: 12px;
     }
 }
