@@ -13,6 +13,48 @@
         function cerrarChat() {
             document.getElementById('chat-box').style.display = 'none';
         }
+
+        // Lógica interactiva del Bot
+        function enviarMensaje() {
+            const input = document.getElementById('chat-input');
+            const texto = input.value.trim();
+            if (!texto) return;
+
+            const cuerpo = document.getElementById('chat-cuerpo');
+
+            // 1. Mensaje del usuario
+            const msgUser = document.createElement('p');
+            msgUser.style.cssText = "background: #003366; color: white; padding: 8px 12px; border-radius: 8px; width: fit-content; max-width: 80%; align-self: flex-end; margin: 5px 0;";
+            msgUser.innerText = texto;
+            cuerpo.appendChild(msgUser);
+
+            input.value = '';
+            cuerpo.scrollTop = cuerpo.scrollHeight;
+
+            // 2. Respuesta automática del Bot simulando IA
+            setTimeout(() => {
+                const msgBot = document.createElement('p');
+                msgBot.style.cssText = "background: #f1f0f0; color: #333; padding: 8px 12px; border-radius: 8px; width: fit-content; max-width: 80%; align-self: flex-start; margin: 5px 0;";
+                
+                const t = texto.toLowerCase();
+                if (t.includes('donde') || t.includes('dónde') || t.includes('fcsh') || t.includes('retirar')) {
+                    msgBot.innerHTML = "🤖 <strong>PolyBot:</strong> El objeto está en la <strong>Garita de FCSH</strong>. Lleva tu carné o cédula para retirarlo.";
+                } else if (t.includes('hora') || t.includes('horario')) {
+                    msgBot.innerHTML = "🤖 <strong>PolyBot:</strong> Las garitas atienden de <strong>07:30 a 19:30</strong> de lunes a viernes.";
+                } else if (t.includes('gracias')) {
+                    msgBot.innerHTML = "🤖 <strong>PolyBot:</strong> ¡De nada! Me alegra ayudarte a recuperar tus cosas. 💙";
+                } else {
+                    msgBot.innerHTML = "🤖 <strong>PolyBot:</strong> Entendido. He notificado a la seguridad de FCSH sobre tu mensaje: <em>\"" + texto + "\"</em>.";
+                }
+
+                cuerpo.appendChild(msgBot);
+                cuerpo.scrollTop = cuerpo.scrollHeight;
+            }, 600);
+        }
+
+        function teclaEnter(e) {
+            if (e.key === 'Enter') enviarMensaje();
+        }
     </script>
 </head>
 <body class="body-menu">
@@ -24,7 +66,7 @@
         <div style="background-color: #fff3cd; color: #856404; padding: 15px; border-radius: 5px; border: 1px solid #ffeeba; margin-bottom: 20px; text-align: left;">
             <strong>¡Buenas noticias! 🚨</strong> Alguien reportó haber encontrado una "Cartuchera negra" en FCSH hace 10 minutos. ¿Es la tuya?
             <br><br>
-            <button onclick="abrirChat()" style="background-color: #28a745; color: white; border: none; padding: 5px 10px; cursor: pointer; border-radius: 3px;">Sí, abrir chat</button>
+            <button onclick="abrirChat()" style="background-color: #28a745; color: white; border: none; padding: 5px 10px; cursor: pointer; border-radius: 3px;">🤖 Abrir asistente IA</button>
             <button onclick="this.parentElement.style.display='none'" style="background-color: #6c757d; color: white; border: none; padding: 5px 10px; cursor: pointer; border-radius: 3px;">No es mía</button>
         </div>
 
@@ -34,18 +76,22 @@
         </div>
     </div>
 
-    <!-- Cuadro Rectangular del Chat (Oculto al inicio) -->
+    <!-- Cuadro del Chat IA -->
     <div id="chat-box">
         <div class="chat-header">
-            <span><strong>Chat - Cartuchera negra (FCSH)</strong></span>
+            <span><strong>🤖 PolyBot - Cartuchera FCSH</strong></span>
             <button onclick="cerrarChat()" style="background: none; border: none; color: white; font-size: 16px; cursor: pointer;">✕</button>
         </div>
-        <div class="chat-body">
-            <p style="background: #f1f0f0; padding: 8px; border-radius: 5px; width: fit-content; margin: 0;">Hola, encontré esta cartuchera cerca de las bancas de FCSH. ¿Pasas retirándola por la garita?</p>
+        
+        <div class="chat-body" id="chat-cuerpo" style="display: flex; flex-direction: column; gap: 6px;">
+            <p style="background: #f1f0f0; padding: 8px 12px; border-radius: 8px; width: fit-content; max-width: 80%; margin: 0;">
+                🤖 ¡Hola! Encontraron una cartuchera en FCSH. ¿Deseas saber cómo y dónde retirarla?
+            </p>
         </div>
+
         <div class="chat-footer">
-            <input type="text" placeholder="Escribe un mensaje..." style="flex: 1; padding: 5px; border: 1px solid #ccc; border-radius: 3px;">
-            <button style="background-color: #003366; color: white; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer; margin: 0;">Enviar</button>
+            <input type="text" id="chat-input" onkeypress="teclaEnter(event)" placeholder="Escribe un mensaje..." style="flex: 1; padding: 6px; border: 1px solid #ccc; border-radius: 3px;">
+            <button onclick="enviarMensaje()" style="background-color: #003366; color: white; border: none; padding: 6px 12px; border-radius: 3px; cursor: pointer; margin: 0;">Enviar</button>
         </div>
     </div>
 </body>
