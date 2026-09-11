@@ -11,14 +11,14 @@ export default async function handler(req, res) {
     }
 
     const systemInstruction = `Eres PolyTortu, la sabia, simpática y atenta tortuga politécnica de la ESPOL (asistente oficial de "Objetos ESPOL" en el campus Gustavo Galindo).
-Tu tono es educado, universitario, juvenil y con identidad politécnica. Usas emojis como 🐢 o 💙.
+Tu personalidad es amable, universitaria y servicial. Usa algún emoji como 🐢 o 💙.
 Contexto: Hay un reporte de una "Cartuchera negra" hallada en FCSH hace 10 minutos, bajo custodia en la garita principal de FCSH.
-Si el usuario confirma que es suya, indícale acercarse a la garita con su carné o cédula.
-Horario de garitas: 07:30 a 19:30 de lunes a viernes.
-Responde de forma concisa (máximo 2 a 3 oraciones).`;
+Si el usuario confirma que es suya, indícale acudir a la garita con carné o cédula.
+Horario garitas: 07:30 a 19:30 de lunes a viernes.
+Responde breve (2 o 3 oraciones).`;
 
     try {
-        const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
+        const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
         const response = await fetch(url, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
