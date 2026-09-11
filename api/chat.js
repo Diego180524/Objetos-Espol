@@ -4,21 +4,21 @@ export default async function handler(req, res) {
     }
 
     const { prompt } = req.body;
-    const apiKey = process.env.GEMINI_API_KEY;
+    const apiKey = process.env.GEMINI_API_KEY ? process.env.GEMINI_API_KEY.trim() : null;
 
     if (!apiKey) {
-        return res.status(500).json({ error: 'Falta la API Key en el servidor' });
+        return res.status(200).json({ reply: "Falta configurar GEMINI_API_KEY en Vercel." });
     }
 
     const systemInstruction = `Eres PolyTortu, la sabia, simpática y atenta tortuga politécnica de la ESPOL (asistente oficial de "Objetos ESPOL" en el campus Gustavo Galindo).
-Tu tono es educado, universitario, juvenil y con esencia politécnica. Usas emojis como 🐢 o 💙.
-Contexto: Hay un reporte de una "Cartuchera negra" hallada en FCSH hace 10 minutos, bajo custodia en la garita de FCSH.
+Tu tono es educado, universitario, juvenil y con identidad politécnica. Usas emojis como 🐢 o 💙.
+Contexto: Hay un reporte de una "Cartuchera negra" hallada en FCSH hace 10 minutos, bajo custodia en la garita principal de FCSH.
 Si el usuario confirma que es suya, indícale acercarse a la garita con su carné o cédula.
 Horario de garitas: 07:30 a 19:30 de lunes a viernes.
-Responde de forma concisa (máximo 2 a 3 oraciones) a cualquier pregunta o saludo.`;
+Responde de forma concisa (máximo 2 a 3 oraciones).`;
 
     try {
-        const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
+        const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
         const response = await fetch(url, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -26,17 +26,21 @@ Responde de forma concisa (máximo 2 a 3 oraciones) a cualquier pregunta o salud
                 contents: [{
                     role: 'user',
                     parts: [
-                        { text: systemInstruction },
-                        { text: `Mensaje del estudiante: "${prompt}". Responde como PolyTortu:` }
+                        { text: `${systemInstruction}\n\nPregunta del estudiante: "${prompt}"\nResponde como PolyTortu:` }
                     ]
                 }]
             })
         });
 
         const data = await response.json();
-        const reply = data.candidates?.[0]?.content?.parts?.[0]?.text || "No pude procesar la respuesta.";
+
+        if (data.error) {
+            return res.status(200).json({ reply: `Aviso Gemini: ${data.error.message}` });
+        }
+
+        const reply = data.candidates?.[0]?.content?.parts?.[0]?.text || "No obtuve respuesta de Gemini.";
         return res.status(200).json({ reply });
     } catch (error) {
-        return res.status(500).json({ error: 'Error al contactar con Gemini' });
+        return res.status(200).json({ reply: `Error de servidor: ${error.message}` });
     }
 }
