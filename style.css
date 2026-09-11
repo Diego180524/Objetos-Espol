@@ -1,58 +1,5 @@
 /* ==========================================
-   1. ESTILOS GENERALES Y BASE
-   ========================================== */
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f4f4f9;
-    margin: 0;
-    padding: 0;
-    min-height: 100vh;
-    box-sizing: border-box;
-}
-
-h1 {
-    color: #003366;
-    margin-bottom: 10px;
-}
-
-p {
-    color: #666;
-    margin-bottom: 20px;
-}
-
-/* Contenedores generales adaptables */
-.container {
-    background-color: white;
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-    text-align: center;
-    max-width: 450px;
-    width: 90%;
-    box-sizing: border-box;
-    margin: auto;
-}
-
-/* Botones institucionales generales */
-button {
-    background-color: #003366; 
-    color: white;
-    border: none;
-    padding: 12px 20px;
-    margin: 5px;
-    border-radius: 6px;
-    font-size: 15px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-button:hover {
-    background-color: #00509e;
-}
-
-/* ==========================================
-   2. FONDOS PROPORCIONALES IDÉNTICOS A LA LAPTOP
+   2. FONDOS (Index y Menú)
    ========================================== */
 body.body-index, body.body-menu {
     min-height: 100vh;
@@ -63,16 +10,33 @@ body.body-index, body.body-menu {
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    background-attachment: fixed;
     position: relative;
     margin: 0;
     box-sizing: border-box;
+}
+
+/* En laptop se mantiene fijo y en cover */
+@media (min-width: 769px) {
+    body.body-index, body.body-menu {
+        background-attachment: fixed;
+    }
+}
+
+/* En celular para que la foto se vea COMPLETA */
+@media (max-width: 768px) {
+    body.body-index, body.body-menu {
+        background-size: contain; /* Si prefieres que llene toda la pantalla prueba: 100% 100% */
+        background-position: center center;
+        background-attachment: scroll;
+        background-color: #002244;
+    }
 }
 
 body.body-index {
     background-image: url('fondo-espol.png');
 }
 
+/* Tu filtro y blur original intacto */
 body.body-index::before {
     content: "";
     position: absolute;
@@ -112,263 +76,4 @@ body.body-menu .container {
     z-index: 2;
     max-width: 450px;
     width: 90%;
-}
-
-body.body-estudiante {
-    width: 100%;
-    min-height: 100vh;
-    background-image: url('fondo-estudiante.png');
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
-    background-repeat: no-repeat;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin: 0;
-    padding: 15px;
-    box-sizing: border-box;
-}
-
-/* ==========================================
-   3. CHAT FLOTANTE
-   ========================================== */
-#chat-box {
-    display: none;
-    position: fixed;
-    right: 15px;
-    bottom: 15px;
-    width: 300px;
-    height: 380px;
-    background: white;
-    border-radius: 10px;
-    box-shadow: 0 5px 25px rgba(0,0,0,0.3);
-    z-index: 10;
-    flex-direction: column;
-    border: 1px solid #ccc;
-}
-
-.chat-header {
-    background-color: #003366;
-    color: white;
-    padding: 10px;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.chat-body {
-    flex: 1;
-    padding: 10px;
-    overflow-y: auto;
-    text-align: left;
-    font-size: 14px;
-}
-
-.chat-footer {
-    padding: 10px;
-    border-top: 1px solid #ddd;
-    display: flex;
-    gap: 5px;
-}
-
-/* ==========================================
-   4. DISEÑO DE DOS COLUMNAS (Estudiante)
-   ========================================== */
-.navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background: rgba(255, 255, 255, 0.95);
-    padding: 12px 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-    margin-bottom: 15px;
-    max-width: 1200px;
-    width: 100%;
-    backdrop-filter: blur(5px);
-    box-sizing: border-box;
-}
-
-.navbar h2 {
-    margin: 0;
-    color: #003366;
-    font-size: 18px;
-}
-
-.navbar nav a {
-    text-decoration: none;
-    color: #555;
-    margin-left: 15px;
-    font-weight: bold;
-    font-size: 13px;
-}
-
-.navbar nav a:hover {
-    color: #003366;
-}
-
-.main-layout {
-    display: flex;
-    gap: 15px;
-    max-width: 1200px;
-    width: 100%;
-    margin: 0 auto;
-}
-
-.form-column {
-    flex: 4;
-    background: rgba(255, 255, 255, 0.95);
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 8px 25px rgba(0,0,0,0.1);
-    backdrop-filter: blur(5px);
-    box-sizing: border-box;
-}
-
-.map-column {
-    flex: 6;
-    background: rgba(255, 255, 255, 0.95);
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 8px 25px rgba(0,0,0,0.1);
-    display: flex;
-    flex-direction: column;
-    backdrop-filter: blur(5px);
-    box-sizing: border-box;
-}
-
-.form-group {
-    margin-bottom: 12px;
-    text-align: left;
-}
-
-label {
-    font-weight: bold;
-    font-size: 13px;
-    display: block;
-    margin-bottom: 5px;
-    color: #444;
-}
-
-select, textarea, input[type="text"], input[type="email"], input[type="password"] {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    box-sizing: border-box;
-    font-size: 14px;
-}
-
-.file-drop-box {
-    border: 2px dashed #003366;
-    background-color: #f8fbff;
-    padding: 15px;
-    text-align: center;
-    border-radius: 8px;
-    cursor: pointer;
-    position: relative;
-}
-
-.file-drop-box input[type="file"] {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    opacity: 0;
-    cursor: pointer;
-}
-
-#miMapa, #mapaGuardia {
-    flex: 1;
-    width: 100%;
-    min-height: 350px;
-    border-radius: 8px;
-    border: 1px solid #ddd;
-    margin-top: 10px;
-}
-
-.btn-primary {
-    background-color: #003366;
-    color: white;
-    border: none;
-    padding: 12px;
-    width: 100%;
-    border-radius: 6px;
-    font-weight: bold;
-    cursor: pointer;
-    font-size: 15px;
-}
-
-.btn-primary:hover {
-    background-color: #002244;
-}
-
-.btn-location {
-    background-color: #28a745;
-    color: white;
-    border: none;
-    padding: 8px 12px;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 13px;
-    font-weight: bold;
-    margin-top: 5px;
-}
-
-/* ==========================================
-   5. DISEÑO RESPONSIVO
-   ========================================== */
-@media (max-width: 768px) {
-    body {
-        height: auto;
-        padding: 10px;
-    }
-
-    body.body-index, body.body-menu {
-        padding: 15px;
-    }
-
-    .container {
-        width: 90%;
-        max-width: 100%;
-        box-sizing: border-box;
-    }
-
-    .main-layout {
-        flex-direction: column;
-        gap: 15px;
-        width: 100%;
-    }
-
-    .navbar {
-        flex-direction: column;
-        gap: 8px;
-        text-align: center;
-        width: 100%;
-        padding: 12px;
-    }
-
-    .navbar nav {
-        display: flex;
-        justify-content: center;
-        gap: 10px;
-    }
-
-    .navbar nav a {
-        margin-left: 0;
-    }
-
-    #miMapa, #mapaGuardia {
-        min-height: 250px;
-    }
-
-    #chat-box {
-        width: 92%;
-        right: 4%;
-        bottom: 10px;
-    }
 }
