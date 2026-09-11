@@ -7,6 +7,15 @@
     <!-- Conectado al CSS centralizado -->
     <link rel="stylesheet" href="style.css"> 
     <script>
+        const GEMINI_API_KEY = "AQ.Ab8RN6IbvIpyKYKSwG3tpFRA1hr8CgZxfFuT2qyVPS-Tai0BCA";
+
+        const SYSTEM_INSTRUCTION = `Eres PolyTortu, la sabia, simpática y atenta tortuga politécnica de la ESPOL (asistente oficial de "Objetos ESPOL" en el campus Gustavo Galindo de Guayaquil).
+Tu tono es educado, universitario, juvenil y con identidad politécnica. Ocasionalmente usas emojis como 🐢 o 💙.
+Contexto: Hay un reporte activo de una "Cartuchera negra" hallada en las bancas de FCSH hace 10 minutos. Está bajo custodia en la garita principal de FCSH.
+Si el usuario indica que es suya, pídele acercarse a la garita con su carné o cédula para verificarlo.
+Horarios de atención en garitas: 07:30 a 19:30 de lunes a viernes.
+Mantén respuestas breves (máximo 2 a 3 frases) y responde con sentido común a cualquier saludo o duda general.`;
+
         function abrirChat() {
             document.getElementById('chat-box').style.display = 'flex';
         }
@@ -14,8 +23,7 @@
             document.getElementById('chat-box').style.display = 'none';
         }
 
-        // Lógica interactiva del Bot
-        function enviarMensaje() {
+        async function enviarMensaje() {
             const input = document.getElementById('chat-input');
             const texto = input.value.trim();
             if (!texto) return;
@@ -24,32 +32,67 @@
 
             // 1. Mensaje del usuario
             const msgUser = document.createElement('p');
-            msgUser.style.cssText = "background: #003366; color: white; padding: 8px 12px; border-radius: 8px; width: fit-content; max-width: 80%; align-self: flex-end; margin: 5px 0;";
+            msgUser.style.cssText = "background: #003366; color: white; padding: 10px 14px; border-radius: 8px; width: fit-content; max-width: 82%; align-self: flex-end; margin: 4px 0; font-size: 14px;";
             msgUser.innerText = texto;
             cuerpo.appendChild(msgUser);
 
             input.value = '';
             cuerpo.scrollTop = cuerpo.scrollHeight;
 
-            // 2. Respuesta automática del Bot simulando IA
-            setTimeout(() => {
-                const msgBot = document.createElement('p');
-                msgBot.style.cssText = "background: #f1f0f0; color: #333; padding: 8px 12px; border-radius: 8px; width: fit-content; max-width: 80%; align-self: flex-start; margin: 5px 0;";
-                
-                const t = texto.toLowerCase();
-                if (t.includes('donde') || t.includes('dónde') || t.includes('fcsh') || t.includes('retirar')) {
-                    msgBot.innerHTML = "🤖 <strong>PolyBot:</strong> El objeto está en la <strong>Garita de FCSH</strong>. Lleva tu carné o cédula para retirarlo.";
-                } else if (t.includes('hora') || t.includes('horario')) {
-                    msgBot.innerHTML = "🤖 <strong>PolyBot:</strong> Las garitas atienden de <strong>07:30 a 19:30</strong> de lunes a viernes.";
-                } else if (t.includes('gracias')) {
-                    msgBot.innerHTML = "🤖 <strong>PolyBot:</strong> ¡De nada! Me alegra ayudarte a recuperar tus cosas. 💙";
-                } else {
-                    msgBot.innerHTML = "🤖 <strong>PolyBot:</strong> Entendido. He notificado a la seguridad de FCSH sobre tu mensaje: <em>\"" + texto + "\"</em>.";
-                }
+            // 2. Estado pensando
+            const msgLoading = document.createElement('p');
+            msgLoading.id = "tortu-cargando";
+            msgLoading.style.cssText = "background: #e9ecef; color: #555; padding: 8px 12px; border-radius: 8px; width: fit-content; margin: 4px 0; font-style: italic; font-size: 13px;";
+            msgLoading.innerText = "🐢 PolyTortu está pensando... 🍃";
+            cuerpo.appendChild(msgLoading);
+            cuerpo.scrollTop = cuerpo.scrollHeight;
 
+            // 3. Petición a Gemini
+            try {
+                const respuesta = await consultarGemini(texto);
+                msgLoading.remove();
+
+                const msgBot = document.createElement('p');
+                msgBot.style.cssText = "background: #f1f0f0; color: #222; padding: 10px 14px; border-radius: 8px; width: fit-content; max-width: 82%; align-self: flex-start; margin: 4px 0; font-size: 14px; line-height: 1.4;";
+                msgBot.innerHTML = `🐢 <strong>PolyTortu:</strong> ${respuesta}`;
                 cuerpo.appendChild(msgBot);
-                cuerpo.scrollTop = cuerpo.scrollHeight;
-            }, 600);
+            } catch (error) {
+                console.error(error);
+                msgLoading.remove();
+                const msgError = document.createElement('p');
+                msgError.style.cssText = "background: #ffebe9; color: #c00; padding: 8px 12px; border-radius: 8px; width: fit-content; margin: 4px 0; font-size: 13px;";
+                msgError.innerText = "⚠️ No pude responder en este momento. Intenta de nuevo.";
+                cuerpo.appendChild(msgError);
+            }
+
+            cuerpo.scrollTop = cuerpo.scrollHeight;
+        }
+
+        async function consultarGemini(promptUsuario) {
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`;
+
+            const response = await fetch(url, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    contents: [
+                        {
+                            role: "user",
+                            parts: [
+                                { text: SYSTEM_INSTRUCTION },
+                                { text: `Mensaje del estudiante: "${promptUsuario}". Responde como PolyTortu:` }
+                            ]
+                        }
+                    ]
+                })
+            });
+
+            if (!response.ok) {
+                throw new Error("Error HTTP: " + response.status);
+            }
+
+            const data = await response.json();
+            return data.candidates[0].content.parts[0].text;
         }
 
         function teclaEnter(e) {
@@ -66,8 +109,8 @@
         <div style="background-color: #fff3cd; color: #856404; padding: 15px; border-radius: 5px; border: 1px solid #ffeeba; margin-bottom: 20px; text-align: left;">
             <strong>¡Buenas noticias! 🚨</strong> Alguien reportó haber encontrado una "Cartuchera negra" en FCSH hace 10 minutos. ¿Es la tuya?
             <br><br>
-            <button onclick="abrirChat()" style="background-color: #28a745; color: white; border: none; padding: 5px 10px; cursor: pointer; border-radius: 3px;">🤖 Abrir asistente IA</button>
-            <button onclick="this.parentElement.style.display='none'" style="background-color: #6c757d; color: white; border: none; padding: 5px 10px; cursor: pointer; border-radius: 3px;">No es mía</button>
+            <button onclick="abrirChat()" style="background-color: #28a745; color: white; border: none; padding: 6px 12px; cursor: pointer; border-radius: 4px; font-weight: bold;">🐢 Abrir PolyTortu IA</button>
+            <button onclick="this.parentElement.style.display='none'" style="background-color: #6c757d; color: white; border: none; padding: 6px 12px; cursor: pointer; border-radius: 4px;">No es mía</button>
         </div>
 
         <div style="display: flex; gap: 10px; justify-content: center;">
@@ -76,22 +119,22 @@
         </div>
     </div>
 
-    <!-- Cuadro del Chat IA -->
-    <div id="chat-box">
+    <!-- Cuadro del Chat IA con tamaño amplio restaurado -->
+    <div id="chat-box" style="width: 380px; height: 480px; max-width: 92vw; max-height: 80vh;">
         <div class="chat-header">
-            <span><strong>🤖 PolyBot - Cartuchera FCSH</strong></span>
+            <span><strong>🐢 PolyTortu - ESPOL IA</strong></span>
             <button onclick="cerrarChat()" style="background: none; border: none; color: white; font-size: 16px; cursor: pointer;">✕</button>
         </div>
         
-        <div class="chat-body" id="chat-cuerpo" style="display: flex; flex-direction: column; gap: 6px;">
-            <p style="background: #f1f0f0; padding: 8px 12px; border-radius: 8px; width: fit-content; max-width: 80%; margin: 0;">
-                🤖 ¡Hola! Encontraron una cartuchera en FCSH. ¿Deseas saber cómo y dónde retirarla?
+        <div class="chat-body" id="chat-cuerpo" style="display: flex; flex-direction: column; gap: 8px; padding: 12px;">
+            <p style="background: #f1f0f0; padding: 10px 14px; border-radius: 8px; width: fit-content; max-width: 82%; margin: 0; font-size: 14px; line-height: 1.4;">
+                🐢 ¡Hola! Soy <strong>PolyTortu</strong>. Encontraron una cartuchera negra en FCSH. ¿Es tuya o necesitas ayuda con otro objeto?
             </p>
         </div>
 
-        <div class="chat-footer">
-            <input type="text" id="chat-input" onkeypress="teclaEnter(event)" placeholder="Escribe un mensaje..." style="flex: 1; padding: 6px; border: 1px solid #ccc; border-radius: 3px;">
-            <button onclick="enviarMensaje()" style="background-color: #003366; color: white; border: none; padding: 6px 12px; border-radius: 3px; cursor: pointer; margin: 0;">Enviar</button>
+        <div class="chat-footer" style="padding: 10px;">
+            <input type="text" id="chat-input" onkeypress="teclaEnter(event)" placeholder="Escribe tu mensaje a PolyTortu..." style="flex: 1; padding: 8px 10px; border: 1px solid #ccc; border-radius: 4px; font-size: 14px;">
+            <button onclick="enviarMensaje()" style="background-color: #003366; color: white; border: none; padding: 8px 14px; border-radius: 4px; cursor: pointer; margin: 0; font-weight: bold;">Enviar</button>
         </div>
     </div>
 </body>
