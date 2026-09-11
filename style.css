@@ -1,5 +1,5 @@
 /* ==========================================
-   2. FONDOS (Index y Menú)
+   FONDOS PROPORCIONALES IDÉNTICOS A LA LAPTOP
    ========================================== */
 body.body-index, body.body-menu {
     min-height: 100vh;
@@ -10,70 +10,44 @@ body.body-index, body.body-menu {
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
+    background-attachment: fixed;
     position: relative;
     margin: 0;
     box-sizing: border-box;
-}
-
-/* En laptop se mantiene fijo y en cover */
-@media (min-width: 769px) {
-    body.body-index, body.body-menu {
-        background-attachment: fixed;
-    }
-}
-
-/* En celular para que la foto se vea COMPLETA */
-@media (max-width: 768px) {
-    body.body-index, body.body-menu {
-        background-size: contain; /* Si prefieres que llene toda la pantalla prueba: 100% 100% */
-        background-position: center center;
-        background-attachment: scroll;
-        background-color: #002244;
-    }
 }
 
 body.body-index {
     background-image: url('fondo-espol.png');
 }
 
-/* Tu filtro y blur original intacto */
-body.body-index::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 33, 66, 0.45);
-    backdrop-filter: blur(2px);
-    z-index: 1;
-}
-
-body.body-index .container {
-    position: relative;
-    z-index: 2;
-    width: 100%;
-    max-width: 380px;
-}
-
 body.body-menu {
     background-image: url('fondo-menu.png.png');
 }
 
-body.body-menu::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
+body.body-estudiante {
     width: 100%;
-    height: 100%;
-    background-color: rgba(0, 33, 66, 0.25);
-    z-index: 1;
+    min-height: 100vh;
+    background-image: url('fondo-estudiante.png');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0;
+    box-sizing: border-box;
 }
 
-body.body-menu .container {
-    position: relative;
-    z-index: 2;
-    max-width: 450px;
-    width: 90%;
+/* Ajuste responsivo para que en celulares la tarjeta no se vea gigante */
+@media (max-width: 768px) {
+    body.body-index, body.body-menu {
+        padding: 20px;
+    }
+    
+    .container {
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box;
+    }
 }
