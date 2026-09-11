@@ -7,15 +7,6 @@
     <!-- Conectado al CSS centralizado -->
     <link rel="stylesheet" href="style.css"> 
     <script>
-        const GEMINI_API_KEY = "AQ.Ab8RN6IbvIpyKYKSwG3tpFRA1hr8CgZxfFuT2qyVPS-Tai0BCA";
-
-        const SYSTEM_INSTRUCTION = `Eres PolyTortu, la sabia, simpática y atenta tortuga politécnica de la ESPOL (asistente oficial de "Objetos ESPOL" en el campus Gustavo Galindo de Guayaquil).
-Tu tono es educado, universitario, juvenil y con identidad politécnica. Ocasionalmente usas emojis como 🐢 o 💙.
-Contexto: Hay un reporte activo de una "Cartuchera negra" hallada en las bancas de FCSH hace 10 minutos. Está bajo custodia en la garita principal de FCSH.
-Si el usuario indica que es suya, pídele acercarse a la garita con su carné o cédula para verificarlo.
-Horarios de atención en garitas: 07:30 a 19:30 de lunes a viernes.
-Mantén respuestas breves (máximo 2 a 3 frases) y responde con sentido común a cualquier saludo o duda general.`;
-
         function abrirChat() {
             document.getElementById('chat-box').style.display = 'flex';
         }
@@ -47,7 +38,7 @@ Mantén respuestas breves (máximo 2 a 3 frases) y responde con sentido común a
             cuerpo.appendChild(msgLoading);
             cuerpo.scrollTop = cuerpo.scrollHeight;
 
-            // 3. Petición a Gemini
+            // 3. Petición a tu API segura en Vercel
             try {
                 const respuesta = await consultarGemini(texto);
                 msgLoading.remove();
@@ -69,30 +60,18 @@ Mantén respuestas breves (máximo 2 a 3 frases) y responde con sentido común a
         }
 
         async function consultarGemini(promptUsuario) {
-            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`;
-
-            const response = await fetch(url, {
+            const response = await fetch('/api/chat', {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    contents: [
-                        {
-                            role: "user",
-                            parts: [
-                                { text: SYSTEM_INSTRUCTION },
-                                { text: `Mensaje del estudiante: "${promptUsuario}". Responde como PolyTortu:` }
-                            ]
-                        }
-                    ]
-                })
+                body: JSON.stringify({ prompt: promptUsuario })
             });
 
             if (!response.ok) {
-                throw new Error("Error HTTP: " + response.status);
+                throw new Error("Error en la respuesta del servidor: " + response.status);
             }
 
             const data = await response.json();
-            return data.candidates[0].content.parts[0].text;
+            return data.reply;
         }
 
         function teclaEnter(e) {
