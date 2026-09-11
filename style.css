@@ -126,6 +126,22 @@ body.body-estudiante {
     align-items: center;
 }
 
+body.body-guardia {
+    width: 100%;
+    min-height: 100vh;
+    background-image: url('fondo-guardia.png');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0;
+    padding: 20px 10px;
+    box-sizing: border-box;
+}
+
 /* ==========================================
    3. CHAT FLOTANTE
    ========================================== */
