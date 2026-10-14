@@ -100,18 +100,33 @@
         <button onclick="document.getElementById('banner-alerta').style.display='none'" style="background: none; border: none; font-size: 18px; color: #856404; cursor: pointer; padding: 0 5px; line-height: 1;">✕</button>
     </div>
 
-    <!-- 2. Contenedor central -->
-    <div class="container">
-        <h1>Objetos ESPOL</h1>
-        <p>Sistema de objetos perdidos y encontrados</p>
+    <!-- 2. Contenedor central moderno estilo tarjeta estética -->
+    <div style="background: rgba(237, 244, 249, 0.92); backdrop-filter: blur(8px); padding: 32px 28px; border-radius: 24px; box-shadow: 0 10px 30px rgba(0, 33, 66, 0.15); border: 1px solid rgba(255, 255, 255, 0.8); text-align: center; max-width: 420px; width: 88%; margin: auto; position: relative; z-index: 2;">
+        
+        <!-- Etiqueta pequeña superior -->
+        <span style="display: inline-block; font-size: 11px; font-weight: 800; letter-spacing: 1.5px; color: #007791; text-transform: uppercase; margin-bottom: 8px;">
+            Comunidad Politécnica
+        </span>
 
-        <div style="display: flex; gap: 10px; justify-content: center; margin-top: 15px;">
-            <button onclick="window.location.href='estudiante.html'" style="flex: 1;">Estudiante</button>
-            <button onclick="window.location.href='guardia.html'" style="flex: 1;">Personal autorizado</button>
+        <h1 style="color: #0b2545; font-size: 26px; font-weight: 800; margin: 0 0 6px 0; letter-spacing: -0.5px;">
+            Objetos ESPOL
+        </h1>
+        
+        <p style="color: #556980; font-size: 13.5px; margin: 0 0 22px 0; line-height: 1.4;">
+            Sistema de objetos perdidos y encontrados
+        </p>
+
+        <div style="display: flex; gap: 12px; justify-content: center;">
+            <button onclick="window.location.href='estudiante.html'" style="flex: 1; background-color: #003366; color: white; border: none; padding: 12px 16px; border-radius: 12px; font-size: 14px; font-weight: 700; cursor: pointer; box-shadow: 0 4px 12px rgba(0, 51, 102, 0.25); transition: transform 0.15s, background-color 0.2s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
+                🎒 Estudiante
+            </button>
+            <button onclick="window.location.href='guardia.html'" style="flex: 1; background-color: #0d47a1; color: white; border: none; padding: 12px 16px; border-radius: 12px; font-size: 14px; font-weight: 700; cursor: pointer; box-shadow: 0 4px 12px rgba(13, 71, 161, 0.25); transition: transform 0.15s, background-color 0.2s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
+                🛡️ Personal
+            </button>
         </div>
     </div>
 
-    <!-- 3. Botón flotante en forma de bolita de tortuga (abajo a la derecha) -->
+    <!-- 3. Botón flotante de PolyTortu -->
     <button onclick="toggleChat()" style="position: fixed; right: 25px; bottom: 25px; width: 56px; height: 56px; border-radius: 50%; background: #003366; color: white; font-size: 26px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(0,0,0,0.3); border: 2px solid white; cursor: pointer; z-index: 99; margin: 0; padding: 0; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.08)'" onmouseout="this.style.transform='scale(1)'" title="Hablar con PolyTortu">
         🐢
     </button>
