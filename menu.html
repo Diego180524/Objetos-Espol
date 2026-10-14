@@ -7,9 +7,19 @@
     <!-- Conectado al CSS centralizado -->
     <link rel="stylesheet" href="style.css"> 
     <script>
+        function toggleChat() {
+            const chat = document.getElementById('chat-box');
+            if (chat.style.display === 'flex') {
+                chat.style.display = 'none';
+            } else {
+                chat.style.display = 'flex';
+            }
+        }
+
         function abrirChat() {
             document.getElementById('chat-box').style.display = 'flex';
         }
+
         function cerrarChat() {
             document.getElementById('chat-box').style.display = 'none';
         }
@@ -80,6 +90,17 @@
     </script>
 </head>
 <body class="body-menu">
+
+    <!-- 1. Tira superior de alerta -->
+    <div id="banner-alerta" style="position: fixed; top: 0; left: 0; width: 100%; background: #fff3cd; color: #856404; border-bottom: 1px solid #ffeeba; padding: 10px 18px; display: flex; justify-content: space-between; align-items: center; z-index: 100; box-shadow: 0 2px 8px rgba(0,0,0,0.08); font-size: 14px; box-sizing: border-box;">
+        <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+            <span>🚨 <strong>¡Aviso de objeto!</strong> Hallaron una <em>"Cartuchera negra"</em> en FCSH. ¿Es tuya? Pregúntale a PolyTortu abajo a la derecha 👇</span>
+            <button onclick="abrirChat()" style="background: #28a745; color: white; border: none; padding: 4px 10px; border-radius: 4px; font-size: 12px; font-weight: bold; cursor: pointer; margin: 0;">Abrir chat</button>
+        </div>
+        <button onclick="document.getElementById('banner-alerta').style.display='none'" style="background: none; border: none; font-size: 18px; color: #856404; cursor: pointer; padding: 0 5px; line-height: 1;">✕</button>
+    </div>
+
+    <!-- 2. Contenedor central -->
     <div class="container">
         <h1>Objetos ESPOL</h1>
         <p>Sistema de objetos perdidos y encontrados</p>
@@ -90,18 +111,13 @@
         </div>
     </div>
 
-    <!-- Alerta de Match Automático movida a la derecha -->
-    <div id="alerta-notificacion" style="position: fixed; right: 25px; top: 120px; width: 300px; max-width: 90vw; background-color: #fff3cd; color: #856404; padding: 15px; border-radius: 8px; border: 1px solid #ffeeba; box-shadow: 0 4px 15px rgba(0,0,0,0.15); z-index: 50; text-align: left;">
-        <strong>¡Buenas noticias! 🚨</strong> Alguien reportó haber encontrado una "Cartuchera negra" en FCSH hace 10 minutos. ¿Es la tuya?
-        <br><br>
-        <div style="display: flex; gap: 8px;">
-            <button onclick="abrirChat()" style="background-color: #28a745; color: white; border: none; padding: 6px 12px; cursor: pointer; border-radius: 4px; font-weight: bold; margin: 0; flex: 1;">🐢 Abrir PolyTortu IA</button>
-            <button onclick="document.getElementById('alerta-notificacion').style.display='none'" style="background-color: #6c757d; color: white; border: none; padding: 6px 12px; cursor: pointer; border-radius: 4px; margin: 0;">No es mía</button>
-        </div>
-    </div>
+    <!-- 3. Botón flotante en forma de bolita de tortuga (abajo a la derecha) -->
+    <button onclick="toggleChat()" style="position: fixed; right: 25px; bottom: 25px; width: 56px; height: 56px; border-radius: 50%; background: #003366; color: white; font-size: 26px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(0,0,0,0.3); border: 2px solid white; cursor: pointer; z-index: 99; margin: 0; padding: 0; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.08)'" onmouseout="this.style.transform='scale(1)'" title="Hablar con PolyTortu">
+        🐢
+    </button>
 
-    <!-- Cuadro del Chat IA con tamaño amplio restaurado -->
-    <div id="chat-box" style="width: 380px; height: 480px; max-width: 92vw; max-height: 80vh;">
+    <!-- 4. Cuadro del Chat IA -->
+    <div id="chat-box" style="position: fixed; right: 25px; bottom: 90px; width: 360px; height: 460px; max-width: 90vw; max-height: 75vh; z-index: 100;">
         <div class="chat-header">
             <span><strong>🐢 PolyTortu - ESPOL IA</strong></span>
             <button onclick="cerrarChat()" style="background: none; border: none; color: white; font-size: 16px; cursor: pointer;">✕</button>
@@ -118,5 +134,6 @@
             <button onclick="enviarMensaje()" style="background-color: #003366; color: white; border: none; padding: 8px 14px; border-radius: 4px; cursor: pointer; margin: 0; font-weight: bold;">Enviar</button>
         </div>
     </div>
+
 </body>
 </html>
