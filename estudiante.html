@@ -11,7 +11,7 @@
 </head>
 <body class="body-estudiante">
 
-    <!-- Barra de navegación (sin la opción Personal) -->
+    <!-- Barra de navegación (sin acceso a Personal) -->
     <div class="navbar">
         <h2>🎒 ESPOL Lost & Found</h2>
         <nav>
@@ -28,10 +28,10 @@
             <h3 style="margin-top: 0; color: #003366;">Nuevo Reporte</h3>
             <p style="font-size: 13px; color: #666; margin-bottom: 20px;">Ayúdanos a devolver las cosas a su dueño en el campus.</p>
 
-            <form>
+            <form id="formReporte">
                 <div class="form-group">
                     <label>¿Qué deseas hacer?</label>
-                    <select>
+                    <select id="tipoReporte">
                         <option>Perdí algo 😭</option>
                         <option>Encontré algo 😇</option>
                     </select>
@@ -39,7 +39,7 @@
 
                 <div class="form-group">
                     <label>¿Qué objeto es?</label>
-                    <select>
+                    <select id="tipoObjeto">
                         <option>Cartuchera</option>
                         <option>Tomatodo</option>
                         <option>Abrigo</option>
@@ -51,18 +51,18 @@
 
                 <div class="form-group">
                     <label>Descripción detallada:</label>
-                    <textarea rows="2" placeholder="Ej: Es negra con cierre rojo..."></textarea>
+                    <textarea id="descripcionObjeto" rows="2" placeholder="Ej: Es negra con cierre rojo..."></textarea>
                 </div>
 
                 <div class="form-group">
                     <label>Tu correo ESPOL o WhatsApp:</label>
-                    <input type="text" placeholder="Ej: usuario@espol.edu.ec / 098...">
+                    <input type="text" id="contactoUsuario" placeholder="Ej: usuario@espol.edu.ec / 098...">
                 </div>
 
                 <!-- Lista de facultades y puntos clave -->
                 <div class="form-group">
                     <label>¿Dónde fue?</label>
-                    <select>
+                    <select id="lugarObjeto">
                         <option>FADCOM</option>
                         <option>FCNM</option>
                         <option>FCSH</option>
@@ -82,18 +82,19 @@
                     <p id="coordenadas" style="color: #003366; font-size: 12px; font-weight: bold; margin: 5px 0 0 0;"></p>
                 </div>
 
-                <!-- Caja Moderna para Foto -->
+                <!-- Caja para Foto -->
                 <div class="form-group">
                     <label>Fotografía del objeto:</label>
                     <div class="file-drop-box">
                         <span style="font-size: 24px;">📷</span><br>
-                        <span style="font-size: 13px; color: #003366; font-weight: bold;">Sube o arrastra una foto</span>
+                        <span id="textoFoto" style="font-size: 13px; color: #003366; font-weight: bold;">Sube o arrastra una foto</span>
                         <p style="font-size: 11px; color: #888; margin: 2px 0 0 0;">JPG, PNG · Opcional</p>
-                        <input type="file" accept="image/*">
+                        <input type="file" id="inputFoto" accept="image/*" onchange="mostrarNombreFoto()">
                     </div>
                 </div>
 
-                <button type="button" class="btn-primary" style="margin: 0; width: 100%;">Publicar Reporte</button>
+                <button type="button" id="btnPublicar" class="btn-primary" onclick="publicarReporte()" style="margin: 0; width: 100%;">Publicar Reporte</button>
+                <p id="estadoSubida" style="font-size: 13px; font-weight: bold; text-align: center; margin-top: 10px;"></p>
             </form>
         </div>
 
@@ -141,6 +142,71 @@
                 });
             } else {
                 texto.innerHTML = "Tu navegador no soporta esta función.";
+            }
+        }
+
+        function mostrarNombreFoto() {
+            const input = document.getElementById("inputFoto");
+            const texto = document.getElementById("textoFoto");
+            if (input.files.length > 0) {
+                texto.innerText = "Seleccionada: " + input.files[0].name;
+            }
+        }
+
+        async function subirACloudinary(archivo) {
+            const cloudName = "dgikbqti";
+            const uploadPreset = "objetos_espol";
+            const url = `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`;
+
+            const formData = new FormData();
+            formData.append("file", archivo);
+            formData.append("upload_preset", uploadPreset);
+
+            const respuesta = await fetch(url, {
+                method: "POST",
+                body: formData
+            });
+
+            if (!respuesta.ok) {
+                throw new Error("Error al subir a Cloudinary");
+            }
+
+            const data = await respuesta.json();
+            return data.secure_url;
+        }
+
+        async function publicarReporte() {
+            const btn = document.getElementById("btnPublicar");
+            const estado = document.getElementById("estadoSubida");
+            const inputFoto = document.getElementById("inputFoto");
+
+            btn.disabled = true;
+            btn.style.opacity = "0.7";
+            estado.style.color = "#003366";
+            estado.innerText = "Procesando reporte... ⏳";
+
+            let urlFoto = "";
+
+            try {
+                if (inputFoto.files.length > 0) {
+                    estado.innerText = "Subiendo fotografía a la nube... ☁️";
+                    urlFoto = await subirACloudinary(inputFoto.files[0]);
+                }
+
+                estado.style.color = "#28a745";
+                estado.innerText = "✅ ¡Reporte publicado con éxito!";
+                alert("¡Reporte guardado exitosamente!" + (urlFoto ? "\n\nFoto guardada en: " + urlFoto : ""));
+                
+                // Reiniciar formulario
+                document.getElementById("formReporte").reset();
+                document.getElementById("textoFoto").innerText = "Sube o arrastra una foto";
+            } catch (error) {
+                console.error(error);
+                estado.style.color = "#c00";
+                estado.innerText = "❌ Ocurrió un error al subir la fotografía.";
+            } finally {
+                btn.disabled = false;
+                btn.style.opacity = "1";
             }
         }
     </script>
