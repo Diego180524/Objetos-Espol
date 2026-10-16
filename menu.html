@@ -10,12 +10,12 @@
         .menu-container {
             background: rgba(237, 244, 249, 0.94);
             backdrop-filter: blur(10px);
-            padding: 18px 20px 22px 20px;
+            padding: 18px 20px 20px 20px;
             border-radius: 22px;
             box-shadow: 0 10px 30px rgba(0, 33, 66, 0.16);
             border: 1px solid rgba(255, 255, 255, 0.85);
             text-align: center;
-            max-width: 660px; /* Más compacto para que se vean bien los personajes */
+            max-width: 660px;
             width: 86%;
             margin: auto;
             position: relative;
@@ -27,6 +27,7 @@
             grid-template-columns: repeat(3, 1fr);
             gap: 12px;
             margin-top: 14px;
+            margin-bottom: 14px;
         }
 
         @media (max-width: 768px) {
@@ -104,6 +105,47 @@
         .btn-donar {
             background-color: #5d3ebc;
             color: #ffffff;
+        }
+
+        /* Botón rectangular inferior */
+        .btn-mural {
+            width: 100%;
+            background: linear-gradient(135deg, #ffffff 0%, #f4f8fc 100%);
+            border: 1.5px solid #cce1f0;
+            border-radius: 12px;
+            padding: 10px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            box-shadow: 0 3px 8px rgba(0, 33, 66, 0.05);
+            transition: all 0.2s ease;
+            box-sizing: border-box;
+        }
+
+        .btn-mural:hover {
+            background: #eef6fd;
+            border-color: #003366;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 14px rgba(0, 51, 102, 0.12);
+        }
+
+        .btn-mural-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-align: left;
+        }
+
+        .emoji-box {
+            font-size: 20px;
+            background: #e0effa;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
         }
     </style>
     <script>
@@ -193,7 +235,7 @@
         <button onclick="document.getElementById('banner-alerta').style.display='none'" style="background: none; border: none; font-size: 16px; color: #856404; cursor: pointer; padding: 0 4px; line-height: 1;">✕</button>
     </div>
 
-    <!-- 2. Contenedor central más compacto -->
+    <!-- 2. Contenedor central -->
     <div class="menu-container">
         
         <span style="display: inline-block; font-size: 11px; font-weight: 800; letter-spacing: 1.2px; color: #5d3ebc; text-transform: uppercase; margin-bottom: 4px;">
@@ -242,6 +284,18 @@
             </div>
 
         </div>
+
+        <!-- Botón rectangular inferior -->
+        <button class="btn-mural" onclick="alert('¡Pronto podrás explorar aquí los objetos publicados! 🔎✨')">
+            <div class="btn-mural-left">
+                <span class="emoji-box">✨</span>
+                <div>
+                    <strong style="color: #003366; font-size: 13.5px; display: block;">¡Encuéntrame aquí! · Objetos en el Campus 🔎🎒</strong>
+                    <span style="color: #556980; font-size: 11.5px;">Mira todo lo que la comunidad ha reportado y encontrado</span>
+                </div>
+            </div>
+            <span style="color: #003366; font-size: 16px; font-weight: bold;">➜</span>
+        </button>
 
     </div>
 
