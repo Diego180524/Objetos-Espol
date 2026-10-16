@@ -3,248 +3,652 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Encuéntrame aquí - Galería ESPOL</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Publicaciones Recientes - PoliFind ESPOL</title>
     <style>
-        body {
-            background-color: #edf4f9;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            color: #1e293b;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
         }
 
-        .header-feed {
+        body {
+            background-color: #f7fafc;
+            color: #0f172a;
+            padding: 30px 24px;
+        }
+
+        .header-section {
+            max-width: 1100px;
+            margin: 0 auto 20px auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .header-titles h1 {
+            font-size: 24px;
+            font-weight: 800;
+            color: #0b2545;
+            margin-bottom: 4px;
+        }
+
+        .header-titles p {
+            font-size: 13.5px;
+            color: #64748b;
+        }
+
+        .btn-volver {
             background: #ffffff;
-            padding: 20px 24px;
-            box-shadow: 0 2px 10px rgba(0, 33, 66, 0.06);
+            border: 1px solid #cbd5e1;
+            padding: 8px 14px;
+            border-radius: 8px;
+            font-size: 12.5px;
+            font-weight: 700;
+            color: #003366;
+            text-decoration: none;
+            transition: all 0.2s;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.03);
+        }
+
+        .btn-volver:hover {
+            background: #f1f5f9;
+            border-color: #003366;
+        }
+
+        /* Barra de filtros y orden */
+        .controls-row {
+            max-width: 1100px;
+            margin: 0 auto 25px auto;
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
-            gap: 12px;
+            gap: 14px;
         }
 
-        .header-feed h1 {
-            font-size: 22px;
-            color: #003366;
-            margin: 0;
+        .pill-filters {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .pill-btn {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 20px;
+            padding: 7px 16px;
+            font-size: 12.5px;
+            font-weight: 600;
+            color: #475569;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .pill-btn:hover {
+            background: #f1f5f9;
+        }
+
+        .pill-btn.active {
+            background: #003366;
+            color: #ffffff;
+            border-color: #003366;
+        }
+
+        .order-selector {
             display: flex;
             align-items: center;
             gap: 8px;
+            font-size: 12.5px;
+            color: #64748b;
         }
 
-        .btn-volver {
-            background: #e2e8f0;
-            color: #0b2545;
-            text-decoration: none;
-            padding: 8px 14px;
-            border-radius: 8px;
-            font-weight: 700;
-            font-size: 13px;
-            transition: background 0.2s;
-        }
-
-        .btn-volver:hover {
-            background: #cbd5e1;
-        }
-
-        .container {
-            max-width: 1000px;
-            margin: 25px auto;
-            padding: 0 16px;
-        }
-
-        /* Barra de búsqueda y filtros */
-        .filtros-box {
-            background: #ffffff;
-            padding: 14px;
-            border-radius: 14px;
-            box-shadow: 0 3px 12px rgba(0,0,0,0.04);
-            display: flex;
-            gap: 12px;
-            flex-wrap: wrap;
-            margin-bottom: 25px;
-        }
-
-        .filtros-box input, .filtros-box select {
-            padding: 9px 12px;
+        .order-selector select {
             border: 1px solid #cbd5e1;
+            background: #ffffff;
+            padding: 6px 10px;
             border-radius: 8px;
-            font-size: 13.5px;
-            flex: 1;
-            min-width: 180px;
+            font-size: 12.5px;
+            color: #0f172a;
+            outline: none;
+            cursor: pointer;
         }
 
-        /* Grid de objetos */
-        .grid-objetos {
+        /* Cuadrícula de tarjetas */
+        .cards-grid {
+            max-width: 1100px;
+            margin: 0 auto;
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 18px;
         }
 
-        .card-item {
+        @media (max-width: 992px) {
+            .cards-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 540px) {
+            .cards-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .item-card {
             background: #ffffff;
             border-radius: 16px;
             overflow: hidden;
-            box-shadow: 0 4px 15px rgba(0, 33, 66, 0.06);
             border: 1px solid #e2e8f0;
+            box-shadow: 0 4px 14px rgba(0, 33, 66, 0.04);
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
             display: flex;
             flex-direction: column;
-            transition: transform 0.2s;
         }
 
-        .card-item:hover {
+        .item-card:hover {
             transform: translateY(-4px);
+            box-shadow: 0 8px 22px rgba(0, 51, 102, 0.1);
         }
 
-        .card-img {
-            width: 100%;
-            height: 180px;
-            object-fit: cover;
-            background: #eef2f6;
+        /* Cabecera de la tarjeta con color pastel */
+        .card-visual {
+            height: 160px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        .card-body {
+        .card-visual.bg-blue { background: #e0ecf7; }
+        .card-visual.bg-peach { background: #fae4c8; }
+        .card-visual.bg-mint { background: #d7ede7; }
+        .card-visual.bg-lavender { background: #e5def5; }
+        .card-visual.bg-pink { background: #fbe0e2; }
+
+        .card-emoji {
+            font-size: 55px;
+            user-select: none;
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.06));
+        }
+
+        .badge-status {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.95);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .badge-status.perdido {
+            color: #b91c1c;
+        }
+        .badge-status.perdido::before {
+            content: "•";
+            font-size: 14px;
+            color: #ef4444;
+        }
+
+        .badge-status.encontrado {
+            color: #15803d;
+        }
+        .badge-status.encontrado::before {
+            content: "•";
+            font-size: 14px;
+            color: #22c55e;
+        }
+
+        /* Cuerpo inferior de la tarjeta */
+        .card-info {
             padding: 14px;
             display: flex;
             flex-direction: column;
             flex: 1;
         }
 
-        .badge {
-            align-self: flex-start;
-            font-size: 10.5px;
-            font-weight: 800;
-            text-transform: uppercase;
-            padding: 4px 8px;
-            border-radius: 6px;
-            margin-bottom: 8px;
+        .card-info h3 {
+            font-size: 15px;
+            font-weight: 700;
+            color: #0b2545;
+            margin-bottom: 4px;
         }
 
-        .badge-encontrado {
-            background: #dcfce7;
-            color: #166534;
+        .card-location {
+            font-size: 12px;
+            color: #64748b;
+            margin-bottom: 14px;
         }
 
-        .badge-perdido {
-            background: #fee2e2;
-            color: #991b1b;
+        .card-footer-meta {
+            margin-top: auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 11.5px;
+            color: #94a3b8;
         }
 
-        .card-body h3 {
-            margin: 0 0 6px 0;
-            font-size: 16px;
+        .link-detalle {
+            color: #003366;
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        /* MODAL MINIMALISTA */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(15, 23, 42, 0.45);
+            backdrop-filter: blur(5px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 16px;
+        }
+
+        .modal-card {
+            background: #ffffff;
+            width: 100%;
+            max-width: 480px;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0, 33, 66, 0.25);
+            animation: fadeIn 0.2s ease-out;
+            position: relative;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .modal-header-bar {
+            padding: 14px 18px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .modal-header-bar h2 {
+            font-size: 15px;
+            font-weight: 700;
             color: #0b2545;
         }
 
-        .card-body p {
-            margin: 0 0 12px 0;
-            font-size: 12.5px;
+        .modal-close-btn {
+            background: #f1f5f9;
+            border: none;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
             color: #64748b;
-            line-height: 1.4;
-            flex: 1;
+            cursor: pointer;
+            transition: all 0.15s;
         }
 
-        .card-meta {
-            font-size: 11.5px;
-            color: #003366;
-            font-weight: 600;
-            background: #f0f7fc;
-            padding: 6px 10px;
-            border-radius: 6px;
+        .modal-close-btn:hover {
+            background: #e2e8f0;
+            color: #0b2545;
+        }
+
+        .modal-body {
+            padding: 16px 20px 20px 20px;
+        }
+
+        .modal-visual {
+            height: 180px;
+            border-radius: 14px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 16px;
+        }
+
+        .modal-visual .card-emoji {
+            font-size: 68px;
+        }
+
+        .modal-body h3 {
+            font-size: 18px;
+            font-weight: 800;
+            color: #0b2545;
+            margin-bottom: 2px;
+        }
+
+        .modal-subtitle {
+            font-size: 12px;
+            color: #64748b;
             margin-bottom: 12px;
         }
 
-        .btn-contactar {
-            background: #003366;
-            color: #ffffff;
-            text-align: center;
-            border: none;
-            padding: 9px;
-            border-radius: 8px;
-            font-weight: 700;
-            font-size: 12.5px;
-            cursor: pointer;
-            text-decoration: none;
-            display: block;
+        .modal-desc {
+            font-size: 13px;
+            color: #334155;
+            line-height: 1.45;
+            margin-bottom: 16px;
         }
 
-        .btn-contactar:hover {
-            background: #002244;
+        .modal-meta-box {
+            background: #f8fafc;
+            border: 1px solid #edf2f7;
+            border-radius: 12px;
+            padding: 12px 14px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .meta-col small {
+            display: block;
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 0.8px;
+            color: #94a3b8;
+            text-transform: uppercase;
+            margin-bottom: 3px;
+        }
+
+        .meta-col span {
+            font-size: 12px;
+            font-weight: 600;
+            color: #0b2545;
+        }
+
+        .btn-modal-contact {
+            width: 100%;
+            background-color: #003366;
+            color: #ffffff;
+            border: none;
+            padding: 11px 16px;
+            border-radius: 10px;
+            font-size: 13.5px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: background-color 0.2s;
+        }
+
+        .btn-modal-contact:hover {
+            background-color: #002244;
         }
     </style>
 </head>
 <body>
 
-    <!-- Encabezado superior -->
-    <div class="header-feed">
-        <h1>🔍 Encuéntrame aquí · ESPOL</h1>
+    <!-- Encabezado -->
+    <div class="header-section">
+        <div class="header-titles">
+            <h1>Publicaciones recientes</h1>
+            <p>Ayuda a que cada objeto vuelva a su dueño en el campus.</p>
+        </div>
         <a href="menu.html" class="btn-volver">← Volver al Menú</a>
     </div>
 
-    <div class="container">
-        
-        <!-- Filtros de búsqueda rápida -->
-        <div class="filtros-box">
-            <input type="text" id="buscador" placeholder="Buscar por objeto (ej. cartuchera, termo, llaves)...">
-            <select id="filtroFacultad">
-                <option value="">Todas las ubicaciones</option>
-                <option value="FADCOM">FADCOM</option>
-                <option value="FCNM">FCNM</option>
-                <option value="FCSH">FCSH</option>
-                <option value="FCV">FCV</option>
-                <option value="FICT">FICT</option>
-                <option value="FIEC">FIEC</option>
-                <option value="FIMCM">FIMCM</option>
-                <option value="FIMCP">FIMCP</option>
-                <option value="Biblioteca">Biblioteca</option>
-                <option value="Sweet and Coffee">Sweet and Coffee</option>
-            </select>
+    <!-- Controles y Categorías -->
+    <div class="controls-row">
+        <div class="pill-filters">
+            <button class="pill-btn active" onclick="filtrarCategoria('Todos', this)">Todos</button>
+            <button class="pill-btn" onclick="filtrarCategoria('Tecnología', this)">Tecnología</button>
+            <button class="pill-btn" onclick="filtrarCategoria('Accesorios', this)">Accesorios</button>
+            <button class="pill-btn" onclick="filtrarCategoria('Documentos', this)">Documentos</button>
+            <button class="pill-btn" onclick="filtrarCategoria('Otros', this)">Otros</button>
         </div>
 
-        <!-- Muro con los reportes -->
-        <div class="grid-objetos">
-            
-            <!-- Ejemplo 1: Cartuchera FCSH -->
-            <div class="card-item">
-                <img src="https://images.unsplash.com/photo-1583485088034-697b5bc54ccd?w=500&auto=format&fit=crop&q=60" alt="Cartuchera" class="card-img">
-                <div class="card-body">
-                    <span class="badge badge-encontrado">Encontrado</span>
-                    <h3>Cartuchera negra</h3>
-                    <p>Encontrada en las bancas exteriores cerca de los laboratorios. Contiene esferos y un flash drive.</p>
-                    <div class="card-meta">📍 Ubicación: FCSH</div>
-                    <button class="btn-contactar" onclick="alert('Contacto de seguridad o estudiante disponible para coordinar la entrega.')">Reclamar Objeto</button>
+        <div class="order-selector">
+            <span>Ordenar</span>
+            <select>
+                <option>Más recientes</option>
+                <option>Más antiguos</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- Grid de Objetos Publicados -->
+    <div class="cards-grid" id="gridCards">
+
+        <!-- 1. Mochila azul -->
+        <div class="item-card" data-cat="Accesorios" onclick="abrirDetalle('Mochila azul', 'Accesorios', 'Perdido', 'bg-blue', '🎒', 'Edificio STEM, planta baja', '14 de octubre de 2026', 'Mochila azul marino con un llavero de estrella. La vi por última vez cerca de las mesas de estudio.')">
+            <div class="card-visual bg-blue">
+                <span class="badge-status perdido">Perdido</span>
+                <span class="card-emoji">🎒</span>
+            </div>
+            <div class="card-info">
+                <h3>Mochila azul</h3>
+                <div class="card-location">♦ Edificio STEM, planta baja</div>
+                <div class="card-footer-meta">
+                    <span>Accesorios · Hace 2 días</span>
+                    <span class="link-detalle">Ver detalle →</span>
                 </div>
             </div>
+        </div>
 
-            <!-- Ejemplo 2: Tomatodo en Biblioteca -->
-            <div class="card-item">
-                <img src="https://images.unsplash.com/photo-1602143407151-7111542de6e8?w=500&auto=format&fit=crop&q=60" alt="Tomatodo" class="card-img">
-                <div class="card-body">
-                    <span class="badge badge-encontrado">Encontrado</span>
-                    <h3>Termo metálico azul</h3>
-                    <p>Olvidado en la mesa redonda del segundo piso, al lado de los cubículos de estudio.</p>
-                    <div class="card-meta">📍 Ubicación: Biblioteca</div>
-                    <button class="btn-contactar" onclick="alert('Contacto de seguridad o estudiante disponible para coordinar la entrega.')">Reclamar Objeto</button>
+        <!-- 2. Audífonos inalámbricos -->
+        <div class="item-card" data-cat="Tecnología" onclick="abrirDetalle('Audífonos inalámbricos', 'Tecnología', 'Encontrado', 'bg-peach', '🎧', 'Biblioteca Central', '14 de octubre de 2026', 'Estuche blanco de audífonos encontrado en una mesa del segundo piso.')">
+            <div class="card-visual bg-peach">
+                <span class="badge-status encontrado">Encontrado</span>
+                <span class="card-emoji">🎧</span>
+            </div>
+            <div class="card-info">
+                <h3>Audífonos inalámbricos</h3>
+                <div class="card-location">♦ Biblioteca Central</div>
+                <div class="card-footer-meta">
+                    <span>Tecnología · Hace 2 días</span>
+                    <span class="link-detalle">Ver detalle →</span>
                 </div>
             </div>
+        </div>
 
-            <!-- Ejemplo 3: Abrigo FIEC -->
-            <div class="card-item">
-                <img src="https://images.unsplash.com/photo-1551028719-00167b16eac5?w=500&auto=format&fit=crop&q=60" alt="Chaqueta" class="card-img">
-                <div class="card-body">
-                    <span class="badge badge-perdido">Se busca</span>
-                    <h3>Chaqueta universitaria azul</h3>
-                    <p>Dejada en el aula 202. Tiene un parche pequeño en el brazo izquierdo. Muy importante recuperarla.</p>
-                    <div class="card-meta">📍 Ubicación: FIEC</div>
-                    <button class="btn-contactar" onclick="alert('Escribe a: usuario@espol.edu.ec')">Tengo información</button>
+        <!-- 3. Carnet estudiantil -->
+        <div class="item-card" data-cat="Documentos" onclick="abrirDetalle('Carnet estudiantil', 'Documentos', 'Perdido', 'bg-mint', '🪪', 'Parada de buses ESPOL', '13 de octubre de 2026', 'Carné de estudiante universitario extraviado al tomar el alimentador en la parada principal.')">
+            <div class="card-visual bg-mint">
+                <span class="badge-status perdido">Perdido</span>
+                <span class="card-emoji">🪪</span>
+            </div>
+            <div class="card-info">
+                <h3>Carnet estudiantil</h3>
+                <div class="card-location">♦ Parada de buses</div>
+                <div class="card-footer-meta">
+                    <span>Documentos · Hace 3 días</span>
+                    <span class="link-detalle">Ver detalle →</span>
                 </div>
             </div>
+        </div>
 
+        <!-- 4. Botella térmica -->
+        <div class="item-card" data-cat="Otros" onclick="abrirDetalle('Botella térmica', 'Otros', 'Encontrado', 'bg-lavender', '🧴', 'Coliseo ESPOL', '13 de octubre de 2026', 'Termo metálico de color lila encontrado en las gradas laterales del coliseo deportivo.')">
+            <div class="card-visual bg-lavender">
+                <span class="badge-status encontrado">Encontrado</span>
+                <div class="card-emoji">🧴</div>
+            </div>
+            <div class="card-info">
+                <h3>Botella térmica</h3>
+                <div class="card-location">♦ Coliseo ESPOL</div>
+                <div class="card-footer-meta">
+                    <span>Otros · Hace 3 días</span>
+                    <span class="link-detalle">Ver detalle →</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 5. Cartuchera con útiles -->
+        <div class="item-card" data-cat="Accesorios" onclick="abrirDetalle('Cartuchera de cierre', 'Accesorios', 'Perdido', 'bg-pink', '🧮', 'FCSH - Aula 104', '12 de octubre de 2026', 'Cartuchera compacta con resaltadores y calculadora básica, olvidada en el pupitre tras clase.')">
+            <div class="card-visual bg-pink">
+                <span class="badge-status perdido">Perdido</span>
+                <span class="card-emoji">🧮</span>
+            </div>
+            <div class="card-info">
+                <h3>Cartuchera de cierre</h3>
+                <div class="card-location">♦ FCSH, Aula 104</div>
+                <div class="card-footer-meta">
+                    <span>Accesorios · Hace 4 días</span>
+                    <span class="link-detalle">Ver detalle →</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 6. Paraguas plegable -->
+        <div class="item-card" data-cat="Otros" onclick="abrirDetalle('Paraguas morado', 'Otros', 'Encontrado', 'bg-mint', '☂️', 'Sweet and Coffee', '12 de octubre de 2026', 'Paraguas morado dejado en el respaldo de una de las sillas exteriores.')">
+            <div class="card-visual bg-mint">
+                <span class="badge-status encontrado">Encontrado</span>
+                <span class="card-emoji">☂️</span>
+            </div>
+            <div class="card-info">
+                <h3>Paraguas morado</h3>
+                <div class="card-location">♦ Sweet and Coffee</div>
+                <div class="card-footer-meta">
+                    <span>Otros · Hace 4 días</span>
+                    <span class="link-detalle">Ver detalle →</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 7. Lentes de descanso -->
+        <div class="item-card" data-cat="Accesorios" onclick="abrirDetalle('Lentes de descanso', 'Accesorios', 'Perdido', 'bg-peach', '👓', 'FIEC - Laboratorio C', '11 de octubre de 2026', 'Lentes marco azul oscuro con antireflejo en su funda de tela.')">
+            <div class="card-visual bg-peach">
+                <span class="badge-status perdido">Perdido</span>
+                <span class="card-emoji">👓</span>
+            </div>
+            <div class="card-info">
+                <h3>Lentes de descanso</h3>
+                <div class="card-location">♦ FIEC, Laboratorio C</div>
+                <div class="card-footer-meta">
+                    <span>Accesorios · Hace 5 días</span>
+                    <span class="link-detalle">Ver detalle →</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 8. Memoria USB -->
+        <div class="item-card" data-cat="Tecnología" onclick="abrirDetalle('Memoria USB 64GB', 'Tecnología', 'Encontrado', 'bg-blue', '💾', 'FADCOM - Taller 2', '10 de octubre de 2026', 'Pendrive metálico con cordón azul encontrado conectado a una máquina.')">
+            <div class="card-visual bg-blue">
+                <span class="badge-status encontrado">Encontrado</span>
+                <span class="card-emoji">💾</span>
+            </div>
+            <div class="card-info">
+                <h3>Memoria USB 64GB</h3>
+                <div class="card-location">♦ FADCOM, Taller 2</div>
+                <div class="card-footer-meta">
+                    <span>Tecnología · Hace 6 días</span>
+                    <span class="link-detalle">Ver detalle →</span>
+                </div>
+            </div>
         </div>
 
     </div>
 
+    <!-- MODAL MINIMALISTA DE DETALLE -->
+    <div class="modal-overlay" id="modalDetalle" onclick="cerrarDetalleFuera(event)">
+        <div class="modal-card">
+            <div class="modal-header-bar">
+                <h2>Detalle del objeto</h2>
+                <button class="modal-close-btn" onclick="cerrarDetalle()">✕</button>
+            </div>
+            <div class="modal-body">
+                <!-- Visual del modal con color e icono -->
+                <div class="modal-visual" id="modalVisual">
+                    <span class="badge-status" id="modalBadge"></span>
+                    <span class="card-emoji" id="modalEmoji"></span>
+                </div>
+
+                <h3 id="modalTitulo"></h3>
+                <div class="modal-subtitle" id="modalSubtitulo"></div>
+                <p class="modal-desc" id="modalDesc"></p>
+
+                <div class="modal-meta-box">
+                    <div class="meta-col">
+                        <small>ÚLTIMO LUGAR VISTO</small>
+                        <span id="modalLugar"></span>
+                    </div>
+                    <div class="meta-col">
+                        <small>FECHA APROXIMADA</small>
+                        <span id="modalFecha"></span>
+                    </div>
+                </div>
+
+                <button class="btn-modal-contact" onclick="contactarObjeto()">
+                    ✉ Contactar por correo
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let objetoActual = "";
+
+        function abrirDetalle(titulo, cat, estado, bgClass, emoji, lugar, fecha, descripcion) {
+            objetoActual = titulo;
+            
+            // Asignar datos al modal
+            document.getElementById("modalTitulo").innerText = titulo;
+            document.getElementById("modalSubtitulo").innerText = `${cat} · Publicado recientemente`;
+            document.getElementById("modalDesc").innerText = descripcion;
+            document.getElementById("modalLugar").innerText = lugar;
+            document.getElementById("modalFecha").innerText = fecha;
+            document.getElementById("modalEmoji").innerText = emoji;
+
+            // Clases de color y estado
+            const modalVisual = document.getElementById("modalVisual");
+            modalVisual.className = `modal-visual ${bgClass}`;
+
+            const modalBadge = document.getElementById("modalBadge");
+            modalBadge.className = `badge-status ${estado.toLowerCase()}`;
+            modalBadge.innerText = estado;
+
+            // Mostrar modal
+            document.getElementById("modalDetalle").style.display = "flex";
+        }
+
+        function cerrarDetalle() {
+            document.getElementById("modalDetalle").style.display = "none";
+        }
+
+        function cerrarDetalleFuera(e) {
+            if (e.target.id === "modalDetalle") {
+                cerrarDetalle();
+            }
+        }
+
+        function contactarObjeto() {
+            alert(`Para coordinar la entrega de "${objetoActual}", escribe al correo institucional del reporte o acércate al puesto de seguridad.`);
+        }
+
+        function filtrarCategoria(categoria, boton) {
+            // Actualizar botón activo
+            document.querySelectorAll(".pill-btn").forEach(btn => btn.classList.remove("active"));
+            boton.classList.add("active");
+
+            // Filtrar tarjetas
+            const tarjetas = document.querySelectorAll(".item-card");
+            tarjetas.forEach(card => {
+                if (categoria === "Todos" || card.getAttribute("data-cat") === categoria) {
+                    card.style.display = "flex";
+                } else {
+                    card.style.display = "none";
+                }
+            });
+        }
+    </script>
 </body>
 </html>
