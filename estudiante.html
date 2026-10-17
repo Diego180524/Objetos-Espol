@@ -32,8 +32,8 @@
                 <div class="form-group">
                     <label>¿Qué deseas hacer?</label>
                     <select id="tipoReporte">
-                        <option>Perdí algo 😭</option>
-                        <option>Encontré algo 😇</option>
+                        <option value="Perdido">Perdí algo 😭</option>
+                        <option value="Encontrado">Encontré algo 😇</option>
                     </select>
                 </div>
 
@@ -180,6 +180,17 @@
             const estado = document.getElementById("estadoSubida");
             const inputFoto = document.getElementById("inputFoto");
 
+            const tipo = document.getElementById("tipoReporte").value;
+            const objeto = document.getElementById("tipoObjeto").value;
+            const desc = document.getElementById("descripcionObjeto").value.trim();
+            const contacto = document.getElementById("contactoUsuario").value.trim();
+            const lugar = document.getElementById("lugarObjeto").value;
+
+            if (!desc) {
+                alert("Por favor escribe una descripción para el reporte.");
+                return;
+            }
+
             btn.disabled = true;
             btn.style.opacity = "0.7";
             estado.style.color = "#003366";
@@ -193,9 +204,31 @@
                     urlFoto = await subirACloudinary(inputFoto.files[0]);
                 }
 
+                // Determinar categoría para los filtros de la galería
+                let categoria = "Otros";
+                if (objeto === "Audífonos") categoria = "Tecnología";
+                else if (objeto === "Cartuchera" || objeto === "Abrigo") categoria = "Accesorios";
+                else if (objeto === "Cédula / Carné") categoria = "Documentos";
+
+                // Guardar reporte en el almacenamiento local para feed.html
+                const nuevoReporte = {
+                    titulo: objeto,
+                    categoria: categoria,
+                    estado: tipo,
+                    imagen: urlFoto,
+                    lugar: lugar,
+                    descripcion: desc,
+                    contacto: contacto || "Puesto de seguridad ESPOL",
+                    fecha: "Hoy"
+                };
+
+                const reportesExistentes = JSON.parse(localStorage.getItem("reportes_polifind") || "[]");
+                reportesExistentes.unshift(nuevoReporte);
+                localStorage.setItem("reportes_polifind", JSON.stringify(reportesExistentes));
+
                 estado.style.color = "#28a745";
                 estado.innerText = "✅ ¡Reporte publicado con éxito!";
-                alert("¡Reporte guardado exitosamente!" + (urlFoto ? "\n\nFoto guardada en: " + urlFoto : ""));
+                alert("¡Reporte guardado exitosamente!\nYa puedes verlo reflejado en la galería.");
                 
                 // Reiniciar formulario
                 document.getElementById("formReporte").reset();
