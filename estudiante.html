@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Panel Estudiante - Objetos ESPOL</title>
-    <!-- Conectado al CSS centralizado -->
     <link rel="stylesheet" href="style.css"> 
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -63,7 +62,6 @@
 </head>
 <body class="body-estudiante">
 
-    <!-- Barra de navegación -->
     <div class="navbar">
         <h2>🎒 ESPOL Lost & Found</h2>
         <nav>
@@ -73,10 +71,7 @@
         </nav>
     </div>
 
-    <!-- Estructura de Dos Columnas Compacta -->
     <div class="main-layout">
-        
-        <!-- COLUMNA IZQUIERDA: Formulario -->
         <div class="form-column">
             <h3 style="margin-top: 0; color: #003366;">Nuevo Reporte</h3>
             <p style="font-size: 13px; color: #666; margin-bottom: 20px;">Ayúdanos a devolver las cosas a su dueño en el campus.</p>
@@ -112,7 +107,6 @@
                     <input type="text" id="contactoUsuario" placeholder="Ej: usuario@espol.edu.ec / 098...">
                 </div>
 
-                <!-- Lista de facultades y puntos clave -->
                 <div class="form-group">
                     <label>¿Dónde fue?</label>
                     <select id="lugarObjeto">
@@ -135,7 +129,6 @@
                     <p id="coordenadas" style="color: #003366; font-size: 12px; font-weight: bold; margin: 5px 0 0 0;"></p>
                 </div>
 
-                <!-- Caja para Foto -->
                 <div class="form-group">
                     <label>Fotografía del objeto:</label>
                     <div class="file-drop-box">
@@ -151,14 +144,11 @@
             </form>
         </div>
 
-        <!-- COLUMNA DERECHA: Mapa Interactivo ESPOL Google Maps -->
         <div class="map-column">
             <h3 style="margin-top: 0; color: #003366;">Ubicación en el Campus</h3>
             <p style="font-size: 13px; color: #666; margin-bottom: 12px;">Visualiza el punto exacto del reporte en el mapa:</p>
-            
             <div id="miMapa"></div>
         </div>
-
     </div>
 
     <script>
@@ -166,22 +156,19 @@
         let marcador;
 
         window.onload = function() {
-            // Límites del campus Prosperina (ESPOL)
-            const esquinaSurOeste = L.latLng(-2.1560, -79.9750);
-            const esquinaNorEste = L.latLng(-2.1380, -79.9550);
-            const limitesESPOL = L.latLngBounds(esquinaSurOeste, esquinaNorEste);
+            const esquinaSurOeste = L.latLng(-2.1800, -79.9800);
+            const esquinaNorEste = L.latLng(-2.1330, -79.9450);
+            const limitesAmpliados = L.latLngBounds(esquinaSurOeste, esquinaNorEste);
 
-            // Inicializar mapa centrado en la ESPOL
             mapa = L.map('miMapa', {
-                center: [-2.1465, -79.9660],
-                zoom: 16,
-                minZoom: 15,
+                center: [-2.1520, -79.9620],
+                zoom: 15,
+                minZoom: 14,
                 maxZoom: 19,
-                maxBounds: limitesESPOL,
-                maxBoundsViscosity: 1.0
+                maxBounds: limitesAmpliados,
+                maxBoundsViscosity: 0.9
             });
 
-            // Capa nativa Google Maps (Limpia, minimalista y sin API key)
             L.tileLayer('https://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', {
                 maxZoom: 20,
                 subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
@@ -203,7 +190,6 @@
                     const lon = posicion.coords.longitude;
                     
                     texto.innerHTML = "📍 ¡Te encontramos en el campus!";
-                    
                     mapa.setView([lat, lon], 17);
 
                     if (marcador) {
@@ -278,13 +264,11 @@
                     urlFoto = await subirACloudinary(inputFoto.files[0]);
                 }
 
-                // Determinar categoría para los filtros de la galería
                 let categoria = "Otros";
                 if (objeto === "Audífonos") categoria = "Tecnología";
                 else if (objeto === "Cartuchera" || objeto === "Abrigo") categoria = "Accesorios";
                 else if (objeto === "Cédula / Carné") categoria = "Documentos";
 
-                // Guardar reporte en el almacenamiento local para feed.html
                 const nuevoReporte = {
                     id: "local-" + Date.now(),
                     titulo: objeto,
@@ -305,7 +289,6 @@
                 estado.innerText = "✅ ¡Reporte publicado con éxito!";
                 alert("¡Reporte guardado exitosamente!\nYa puedes verlo reflejado en la galería.");
                 
-                // Reiniciar formulario
                 document.getElementById("formReporte").reset();
                 document.getElementById("textoFoto").innerText = "Sube o arrastra una foto";
             } catch (error) {
