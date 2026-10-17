@@ -152,13 +152,20 @@
             box-shadow: 0 8px 22px rgba(0, 51, 102, 0.1);
         }
 
-        /* Cabecera de la tarjeta con color pastel */
+        /* Cabecera de la tarjeta con color pastel o imagen */
         .card-visual {
             height: 160px;
             position: relative;
             display: flex;
             align-items: center;
             justify-content: center;
+            overflow: hidden;
+        }
+
+        .card-visual img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
         .card-visual.bg-blue { background: #e0ecf7; }
@@ -186,6 +193,7 @@
             align-items: center;
             gap: 5px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            z-index: 2;
         }
 
         .badge-status.perdido {
@@ -313,13 +321,20 @@
         }
 
         .modal-visual {
-            height: 180px;
+            height: 190px;
             border-radius: 14px;
             position: relative;
             display: flex;
             align-items: center;
             justify-content: center;
             margin-bottom: 16px;
+            overflow: hidden;
+        }
+
+        .modal-visual img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
         .modal-visual .card-emoji {
@@ -418,145 +433,15 @@
 
         <div class="order-selector">
             <span>Ordenar</span>
-            <select>
-                <option>Más recientes</option>
-                <option>Más antiguos</option>
+            <select id="selectOrden" onchange="cambiarOrden()">
+                <option value="recientes">Más recientes</option>
+                <option value="antiguos">Más antiguos</option>
             </select>
         </div>
     </div>
 
-    <!-- Grid de Objetos Publicados -->
-    <div class="cards-grid" id="gridCards">
-
-        <!-- 1. Mochila azul -->
-        <div class="item-card" data-cat="Accesorios" onclick="abrirDetalle('Mochila azul', 'Accesorios', 'Perdido', 'bg-blue', '🎒', 'Edificio STEM, planta baja', '14 de octubre de 2026', 'Mochila azul marino con un llavero de estrella. La vi por última vez cerca de las mesas de estudio.')">
-            <div class="card-visual bg-blue">
-                <span class="badge-status perdido">Perdido</span>
-                <span class="card-emoji">🎒</span>
-            </div>
-            <div class="card-info">
-                <h3>Mochila azul</h3>
-                <div class="card-location">♦ Edificio STEM, planta baja</div>
-                <div class="card-footer-meta">
-                    <span>Accesorios · Hace 2 días</span>
-                    <span class="link-detalle">Ver detalle →</span>
-                </div>
-            </div>
-        </div>
-
-        <!-- 2. Audífonos inalámbricos -->
-        <div class="item-card" data-cat="Tecnología" onclick="abrirDetalle('Audífonos inalámbricos', 'Tecnología', 'Encontrado', 'bg-peach', '🎧', 'Biblioteca Central', '14 de octubre de 2026', 'Estuche blanco de audífonos encontrado en una mesa del segundo piso.')">
-            <div class="card-visual bg-peach">
-                <span class="badge-status encontrado">Encontrado</span>
-                <span class="card-emoji">🎧</span>
-            </div>
-            <div class="card-info">
-                <h3>Audífonos inalámbricos</h3>
-                <div class="card-location">♦ Biblioteca Central</div>
-                <div class="card-footer-meta">
-                    <span>Tecnología · Hace 2 días</span>
-                    <span class="link-detalle">Ver detalle →</span>
-                </div>
-            </div>
-        </div>
-
-        <!-- 3. Carnet estudiantil -->
-        <div class="item-card" data-cat="Documentos" onclick="abrirDetalle('Carnet estudiantil', 'Documentos', 'Perdido', 'bg-mint', '🪪', 'Parada de buses ESPOL', '13 de octubre de 2026', 'Carné de estudiante universitario extraviado al tomar el alimentador en la parada principal.')">
-            <div class="card-visual bg-mint">
-                <span class="badge-status perdido">Perdido</span>
-                <span class="card-emoji">🪪</span>
-            </div>
-            <div class="card-info">
-                <h3>Carnet estudiantil</h3>
-                <div class="card-location">♦ Parada de buses</div>
-                <div class="card-footer-meta">
-                    <span>Documentos · Hace 3 días</span>
-                    <span class="link-detalle">Ver detalle →</span>
-                </div>
-            </div>
-        </div>
-
-        <!-- 4. Botella térmica -->
-        <div class="item-card" data-cat="Otros" onclick="abrirDetalle('Botella térmica', 'Otros', 'Encontrado', 'bg-lavender', '🧴', 'Coliseo ESPOL', '13 de octubre de 2026', 'Termo metálico de color lila encontrado en las gradas laterales del coliseo deportivo.')">
-            <div class="card-visual bg-lavender">
-                <span class="badge-status encontrado">Encontrado</span>
-                <div class="card-emoji">🧴</div>
-            </div>
-            <div class="card-info">
-                <h3>Botella térmica</h3>
-                <div class="card-location">♦ Coliseo ESPOL</div>
-                <div class="card-footer-meta">
-                    <span>Otros · Hace 3 días</span>
-                    <span class="link-detalle">Ver detalle →</span>
-                </div>
-            </div>
-        </div>
-
-        <!-- 5. Cartuchera con útiles -->
-        <div class="item-card" data-cat="Accesorios" onclick="abrirDetalle('Cartuchera de cierre', 'Accesorios', 'Perdido', 'bg-pink', '🧮', 'FCSH - Aula 104', '12 de octubre de 2026', 'Cartuchera compacta con resaltadores y calculadora básica, olvidada en el pupitre tras clase.')">
-            <div class="card-visual bg-pink">
-                <span class="badge-status perdido">Perdido</span>
-                <span class="card-emoji">🧮</span>
-            </div>
-            <div class="card-info">
-                <h3>Cartuchera de cierre</h3>
-                <div class="card-location">♦ FCSH, Aula 104</div>
-                <div class="card-footer-meta">
-                    <span>Accesorios · Hace 4 días</span>
-                    <span class="link-detalle">Ver detalle →</span>
-                </div>
-            </div>
-        </div>
-
-        <!-- 6. Paraguas plegable -->
-        <div class="item-card" data-cat="Otros" onclick="abrirDetalle('Paraguas morado', 'Otros', 'Encontrado', 'bg-mint', '☂️', 'Sweet and Coffee', '12 de octubre de 2026', 'Paraguas morado dejado en el respaldo de una de las sillas exteriores.')">
-            <div class="card-visual bg-mint">
-                <span class="badge-status encontrado">Encontrado</span>
-                <span class="card-emoji">☂️</span>
-            </div>
-            <div class="card-info">
-                <h3>Paraguas morado</h3>
-                <div class="card-location">♦ Sweet and Coffee</div>
-                <div class="card-footer-meta">
-                    <span>Otros · Hace 4 días</span>
-                    <span class="link-detalle">Ver detalle →</span>
-                </div>
-            </div>
-        </div>
-
-        <!-- 7. Lentes de descanso -->
-        <div class="item-card" data-cat="Accesorios" onclick="abrirDetalle('Lentes de descanso', 'Accesorios', 'Perdido', 'bg-peach', '👓', 'FIEC - Laboratorio C', '11 de octubre de 2026', 'Lentes marco azul oscuro con antireflejo en su funda de tela.')">
-            <div class="card-visual bg-peach">
-                <span class="badge-status perdido">Perdido</span>
-                <span class="card-emoji">👓</span>
-            </div>
-            <div class="card-info">
-                <h3>Lentes de descanso</h3>
-                <div class="card-location">♦ FIEC, Laboratorio C</div>
-                <div class="card-footer-meta">
-                    <span>Accesorios · Hace 5 días</span>
-                    <span class="link-detalle">Ver detalle →</span>
-                </div>
-            </div>
-        </div>
-
-        <!-- 8. Memoria USB -->
-        <div class="item-card" data-cat="Tecnología" onclick="abrirDetalle('Memoria USB 64GB', 'Tecnología', 'Encontrado', 'bg-blue', '💾', 'FADCOM - Taller 2', '10 de octubre de 2026', 'Pendrive metálico con cordón azul encontrado conectado a una máquina.')">
-            <div class="card-visual bg-blue">
-                <span class="badge-status encontrado">Encontrado</span>
-                <span class="card-emoji">💾</span>
-            </div>
-            <div class="card-info">
-                <h3>Memoria USB 64GB</h3>
-                <div class="card-location">♦ FADCOM, Taller 2</div>
-                <div class="card-footer-meta">
-                    <span>Tecnología · Hace 6 días</span>
-                    <span class="link-detalle">Ver detalle →</span>
-                </div>
-            </div>
-        </div>
-
-    </div>
+    <!-- Grid de Objetos Publicados Dinámico -->
+    <div class="cards-grid" id="gridCards"></div>
 
     <!-- MODAL MINIMALISTA DE DETALLE -->
     <div class="modal-overlay" id="modalDetalle" onclick="cerrarDetalleFuera(event)">
@@ -566,10 +451,9 @@
                 <button class="modal-close-btn" onclick="cerrarDetalle()">✕</button>
             </div>
             <div class="modal-body">
-                <!-- Visual del modal con color e icono -->
                 <div class="modal-visual" id="modalVisual">
                     <span class="badge-status" id="modalBadge"></span>
-                    <span class="card-emoji" id="modalEmoji"></span>
+                    <div id="modalVisualContent"></div>
                 </div>
 
                 <h3 id="modalTitulo"></h3>
@@ -595,28 +479,113 @@
     </div>
 
     <script>
-        let objetoActual = "";
+        // Catálogo base de ejemplo que ya tenías
+        const objetosBase = [
+            { titulo: "Mochila azul", categoria: "Accesorios", estado: "Perdido", bgClass: "bg-blue", emoji: "🎒", lugar: "Edificio STEM, planta baja", fecha: "14 de octubre de 2026", tiempo: "Hace 2 días", desc: "Mochila azul marino con un llavero de estrella. La vi por última vez cerca de las mesas de estudio.", contacto: "estudiante@espol.edu.ec" },
+            { titulo: "Audífonos inalámbricos", categoria: "Tecnología", estado: "Encontrado", bgClass: "bg-peach", emoji: "🎧", lugar: "Biblioteca Central", fecha: "14 de octubre de 2026", tiempo: "Hace 2 días", desc: "Estuche blanco de audífonos encontrado en una mesa del segundo piso.", contacto: "seguridad@espol.edu.ec" },
+            { titulo: "Carnet estudiantil", categoria: "Documentos", estado: "Perdido", bgClass: "bg-mint", emoji: "🪪", lugar: "Parada de buses ESPOL", fecha: "13 de octubre de 2026", tiempo: "Hace 3 días", desc: "Carné de estudiante universitario extraviado al tomar el alimentador en la parada principal.", contacto: "estudiante@espol.edu.ec" },
+            { titulo: "Botella térmica", categoria: "Otros", estado: "Encontrado", bgClass: "bg-lavender", emoji: "🧴", lugar: "Coliseo ESPOL", fecha: "13 de octubre de 2026", tiempo: "Hace 3 días", desc: "Termo metálico de color lila encontrado en las gradas laterales del coliseo deportivo.", contacto: "seguridad@espol.edu.ec" },
+            { titulo: "Cartuchera de cierre", categoria: "Accesorios", estado: "Perdido", bgClass: "bg-pink", emoji: "🧮", lugar: "FCSH - Aula 104", fecha: "12 de octubre de 2026", tiempo: "Hace 4 días", desc: "Cartuchera compacta con resaltadores y calculadora básica, olvidada en el pupitre tras clase.", contacto: "estudiante@espol.edu.ec" },
+            { titulo: "Paraguas morado", categoria: "Otros", estado: "Encontrado", bgClass: "bg-mint", emoji: "☂️", lugar: "Sweet and Coffee", fecha: "12 de octubre de 2026", tiempo: "Hace 4 días", desc: "Paraguas morado dejado en el respaldo de una de las sillas exteriores.", contacto: "seguridad@espol.edu.ec" },
+            { titulo: "Lentes de descanso", categoria: "Accesorios", estado: "Perdido", bgClass: "bg-peach", emoji: "👓", lugar: "FIEC - Laboratorio C", fecha: "11 de octubre de 2026", tiempo: "Hace 5 días", desc: "Lentes marco azul oscuro con antireflejo en su funda de tela.", contacto: "estudiante@espol.edu.ec" },
+            { titulo: "Memoria USB 64GB", categoria: "Tecnología", estado: "Encontrado", bgClass: "bg-blue", emoji: "💾", lugar: "FADCOM - Taller 2", fecha: "10 de octubre de 2026", tiempo: "Hace 6 días", desc: "Pendrive metálico con cordón azul encontrado conectado a una máquina.", contacto: "seguridad@espol.edu.ec" }
+        ];
 
-        function abrirDetalle(titulo, cat, estado, bgClass, emoji, lugar, fecha, descripcion) {
-            objetoActual = titulo;
+        let contactoActual = "";
+        let categoriaSeleccionada = "Todos";
+
+        function cargarYRenderizarObjetos() {
+            const grid = document.getElementById("gridCards");
+            grid.innerHTML = "";
+
+            // 1. Obtener reportes reales guardados en localStorage desde estudiante.html
+            const reportesLocales = JSON.parse(localStorage.getItem("reportes_polifind") || "[]");
+
+            // Convertir formato si es necesario
+            const formateadosLocales = reportesLocales.map(item => ({
+                titulo: item.titulo,
+                categoria: item.categoria,
+                estado: item.estado,
+                imagen: item.imagen,
+                bgClass: item.estado.toLowerCase().includes("perd") ? "bg-pink" : "bg-mint",
+                emoji: "📦",
+                lugar: item.lugar,
+                fecha: item.fecha || "Hoy",
+                tiempo: "Recién publicado",
+                desc: item.descripcion,
+                contacto: item.contacto
+            }));
+
+            // 2. Unir reportes reales al principio + catálogo base
+            let listaCompleta = [...formateadosLocales, ...objetosBase];
+
+            // Invertir si eligieron "Más antiguos"
+            const orden = document.getElementById("selectOrden").value;
+            if (orden === "antiguos") {
+                listaCompleta.reverse();
+            }
+
+            // 3. Renderizar cada tarjeta
+            listaCompleta.forEach(obj => {
+                const card = document.createElement("div");
+                card.className = "item-card";
+                card.setAttribute("data-cat", obj.categoria);
+
+                const statusClass = obj.estado.toLowerCase().includes("perd") ? "perdido" : "encontrado";
+                const statusTexto = obj.estado.toLowerCase().includes("perd") ? "Perdido" : "Encontrado";
+
+                // Si viene con foto real de Cloudinary, muestra la imagen; sino, el emoji
+                const visualHTML = obj.imagen 
+                    ? `<img src="${obj.imagen}" alt="${obj.titulo}">` 
+                    : `<span class="card-emoji">${obj.emoji}</span>`;
+
+                card.innerHTML = `
+                    <div class="card-visual ${obj.imagen ? '' : obj.bgClass}">
+                        <span class="badge-status ${statusClass}">${statusTexto}</span>
+                        ${visualHTML}
+                    </div>
+                    <div class="card-info">
+                        <h3>${obj.titulo}</h3>
+                        <div class="card-location">♦ ${obj.lugar}</div>
+                        <div class="card-footer-meta">
+                            <span>${obj.categoria} · ${obj.tiempo}</span>
+                            <span class="link-detalle">Ver detalle →</span>
+                        </div>
+                    </div>
+                `;
+
+                card.onclick = () => abrirDetalle(obj, statusClass, statusTexto);
+                grid.appendChild(card);
+            });
+
+            // Aplicar filtro activo si existía
+            aplicarFiltroDOM();
+        }
+
+        function abrirDetalle(obj, statusClass, statusTexto) {
+            contactoActual = obj.contacto || "seguridad@espol.edu.ec";
             
-            // Asignar datos al modal
-            document.getElementById("modalTitulo").innerText = titulo;
-            document.getElementById("modalSubtitulo").innerText = `${cat} · Publicado recientemente`;
-            document.getElementById("modalDesc").innerText = descripcion;
-            document.getElementById("modalLugar").innerText = lugar;
-            document.getElementById("modalFecha").innerText = fecha;
-            document.getElementById("modalEmoji").innerText = emoji;
+            document.getElementById("modalTitulo").innerText = obj.titulo;
+            document.getElementById("modalSubtitulo").innerText = `${obj.categoria} · Publicado ${obj.tiempo}`;
+            document.getElementById("modalDesc").innerText = obj.desc;
+            document.getElementById("modalLugar").innerText = obj.lugar;
+            document.getElementById("modalFecha").innerText = obj.fecha;
 
-            // Clases de color y estado
             const modalVisual = document.getElementById("modalVisual");
-            modalVisual.className = `modal-visual ${bgClass}`;
+            const modalContent = document.getElementById("modalVisualContent");
+            
+            if (obj.imagen) {
+                modalVisual.className = "modal-visual";
+                modalContent.innerHTML = `<img src="${obj.imagen}" alt="${obj.titulo}">`;
+            } else {
+                modalVisual.className = `modal-visual ${obj.bgClass}`;
+                modalContent.innerHTML = `<span class="card-emoji" style="font-size: 68px;">${obj.emoji}</span>`;
+            }
 
             const modalBadge = document.getElementById("modalBadge");
-            modalBadge.className = `badge-status ${estado.toLowerCase()}`;
-            modalBadge.innerText = estado;
+            modalBadge.className = `badge-status ${statusClass}`;
+            modalBadge.innerText = statusTexto;
 
-            // Mostrar modal
             document.getElementById("modalDetalle").style.display = "flex";
         }
 
@@ -631,24 +600,32 @@
         }
 
         function contactarObjeto() {
-            alert(`Para coordinar la entrega de "${objetoActual}", escribe al correo institucional del reporte o acércate al puesto de seguridad.`);
+            alert(`Para coordinar la entrega o reclamo de este objeto:\n\n✉ Contacto: ${contactoActual}`);
         }
 
         function filtrarCategoria(categoria, boton) {
-            // Actualizar botón activo
+            categoriaSeleccionada = categoria;
             document.querySelectorAll(".pill-btn").forEach(btn => btn.classList.remove("active"));
             boton.classList.add("active");
+            aplicarFiltroDOM();
+        }
 
-            // Filtrar tarjetas
+        function aplicarFiltroDOM() {
             const tarjetas = document.querySelectorAll(".item-card");
             tarjetas.forEach(card => {
-                if (categoria === "Todos" || card.getAttribute("data-cat") === categoria) {
+                if (categoriaSeleccionada === "Todos" || card.getAttribute("data-cat") === categoriaSeleccionada) {
                     card.style.display = "flex";
                 } else {
                     card.style.display = "none";
                 }
             });
         }
+
+        function cambiarOrden() {
+            cargarYRenderizarObjetos();
+        }
+
+        window.onload = cargarYRenderizarObjetos;
     </script>
 </body>
 </html>
