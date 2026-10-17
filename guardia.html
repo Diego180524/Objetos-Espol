@@ -190,6 +190,47 @@
             box-shadow: inset 0 2px 6px rgba(0,0,0,0.06);
             overflow: hidden;
         }
+
+        /* Pines personalizados en el mapa */
+        .custom-pin {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            color: #ffffff;
+            font-weight: 800;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            border: 2px solid #ffffff;
+            user-select: none;
+        }
+
+        .pin-perdido {
+            background: #ef4444;
+            width: 32px;
+            height: 32px;
+            font-size: 15px;
+        }
+
+        .pin-encontrado {
+            background: #16a34a;
+            width: 32px;
+            height: 32px;
+            font-size: 15px;
+            border-radius: 50% 50% 50% 4px;
+            transform: rotate(-45deg);
+        }
+
+        .pin-encontrado span {
+            transform: rotate(45deg);
+            display: block;
+        }
+
+        .pin-entregado {
+            background: #64748b;
+            width: 28px;
+            height: 28px;
+            font-size: 13px;
+        }
     </style>
 </head>
 <body class="body-guardia">
@@ -244,7 +285,7 @@
         </div>
 
         <h3 style="color: #003366; margin: 0 0 6px 0; font-size: 16px;">Mapa General de Reportes</h3>
-        <p style="font-size: 12.5px; color: #64748b; margin-bottom: 12px;">Visualización geográfica desde Prosperina hasta Ceibos y Prepo:</p>
+        <p style="font-size: 12.5px; color: #64748b; margin-bottom: 12px;">Visualización geográfica (🔴 Rojo: Perdido | 🟢 Verde: Encontrado):</p>
         <div id="mapaGuardia"></div>
 
         <a href="menu.html" style="color: #003366; font-weight: bold; text-decoration: none; font-size: 13px;">← Volver al inicio</a>
@@ -280,8 +321,8 @@
             const limitesAmpliados = L.latLngBounds(esquinaSurOeste, esquinaNorEste);
 
             mapa = L.map('mapaGuardia', {
-                center: [-2.1500, -79.9640],
-                zoom: 15,
+                center: [-2.1480, -79.9660],
+                zoom: 16,
                 minZoom: 14,
                 maxZoom: 19,
                 maxBounds: limitesAmpliados,
@@ -306,6 +347,32 @@
         function obtenerReportes() {
             const guardados = JSON.parse(localStorage.getItem("reportes_polifind") || "[]");
             return [...guardados, ...baseFicticia];
+        }
+
+        function crearIconoPersonalizado(estado) {
+            const est = estado.toLowerCase();
+            if (est.includes("perd")) {
+                return L.divIcon({
+                    className: '',
+                    html: '<div class="custom-pin pin-perdido" title="Objeto Perdido">🔍</div>',
+                    iconSize: [32, 32],
+                    iconAnchor: [16, 16]
+                });
+            } else if (est.includes("encontr")) {
+                return L.divIcon({
+                    className: '',
+                    html: '<div class="custom-pin pin-encontrado" title="Objeto Encontrado"><span>✓</span></div>',
+                    iconSize: [32, 32],
+                    iconAnchor: [16, 30]
+                });
+            } else {
+                return L.divIcon({
+                    className: '',
+                    html: '<div class="custom-pin pin-entregado" title="Objeto Entregado">📦</div>',
+                    iconSize: [28, 28],
+                    iconAnchor: [14, 14]
+                });
+            }
         }
 
         function renderizarDatos() {
@@ -348,8 +415,17 @@
                 `;
                 tbody.appendChild(tr);
 
-                const coords = coordenadasZonas[item.lugar] || coordenadasZonas["Otros"];
-                const marker = L.marker(coords).addTo(markersGroup);
+                // Agregar marcador con icono según estado
+                let coords = coordenadasZonas[item.lugar] || coordenadasZonas["Otros"];
+                // Ligera variación aleatoria si hay varios en la misma facultad para que no se tapen
+                const offsetLat = (Math.random() - 0.5) * 0.0003;
+                const offsetLon = (Math.random() - 0.5) * 0.0003;
+                const puntoCoords = [coords[0] + offsetLat, coords[1] + offsetLon];
+
+                const marker = L.marker(puntoCoords, {
+                    icon: crearIconoPersonalizado(item.estado)
+                }).addTo(markersGroup);
+
                 marker.bindPopup(`
                     <div style="font-size: 13px; line-height: 1.4;">
                         <strong style="color: #003366;">${item.titulo}</strong><br>
