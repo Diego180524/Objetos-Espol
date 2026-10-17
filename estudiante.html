@@ -151,7 +151,7 @@
             </form>
         </div>
 
-        <!-- COLUMNA DERECHA: Mapa Interactivo ESPOL Estilo Waze -->
+        <!-- COLUMNA DERECHA: Mapa Interactivo ESPOL Google Maps -->
         <div class="map-column">
             <h3 style="margin-top: 0; color: #003366;">Ubicación en el Campus</h3>
             <p style="font-size: 13px; color: #666; margin-bottom: 12px;">Visualiza el punto exacto del reporte en el mapa:</p>
@@ -166,29 +166,28 @@
         let marcador;
 
         window.onload = function() {
-            // 1. Límites exactos del campus Prosperina (ESPOL)
+            // Límites del campus Prosperina (ESPOL)
             const esquinaSurOeste = L.latLng(-2.1560, -79.9750);
             const esquinaNorEste = L.latLng(-2.1380, -79.9550);
             const limitesESPOL = L.latLngBounds(esquinaSurOeste, esquinaNorEste);
 
-            // 2. Inicializar mapa bloqueado en la ESPOL
+            // Inicializar mapa centrado en la ESPOL
             mapa = L.map('miMapa', {
                 center: [-2.1465, -79.9660],
                 zoom: 16,
-                minZoom: 15,             // No deja alejarse de la ESPOL
-                maxZoom: 18,             // Detalle perfecto de facultades
-                maxBounds: limitesESPOL,    // Rebote para no salirse del campus
-                maxBoundsViscosity: 1.0     // Rebote rígido
+                minZoom: 15,
+                maxZoom: 19,
+                maxBounds: limitesESPOL,
+                maxBoundsViscosity: 1.0
             });
 
-            // 3. Capa de diseño tipo Waze / CartoDB Voyager
-            L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
-                attribution: '&copy; CartoDB &copy; OpenStreetMap',
-                subdomains: 'abcd',
-                maxZoom: 19
+            // Capa nativa Google Maps (Limpia, minimalista y sin API key)
+            L.tileLayer('https://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', {
+                maxZoom: 20,
+                subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
+                attribution: '&copy; Google Maps'
             }).addTo(mapa);
 
-            // 4. Redibujar para evitar espacios grises
             setTimeout(() => {
                 mapa.invalidateSize();
             }, 300);
