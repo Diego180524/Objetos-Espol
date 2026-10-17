@@ -147,11 +147,36 @@
             justify-content: center;
             border-radius: 10px;
         }
+
+        #alerta-contenido {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+            transition: opacity 0.35s ease, transform 0.35s ease;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        #alerta-contenido.rotando {
+            opacity: 0;
+            transform: translateY(-6px);
+        }
     </style>
     <script>
         function toggleChat() {
             const chat = document.getElementById('chat-box');
             chat.style.display = chat.style.display === 'flex' ? 'none' : 'flex';
+        }
+
+        function abrirChatConTexto(consulta) {
+            const chat = document.getElementById('chat-box');
+            chat.style.display = 'flex';
+            if (consulta) {
+                const input = document.getElementById('chat-input');
+                input.value = `Hola, quisiera información sobre: ${consulta}`;
+                input.focus();
+            }
         }
 
         function abrirChat() {
@@ -222,16 +247,63 @@
         function teclaEnter(e) {
             if (e.key === 'Enter') enviarMensaje();
         }
+
+        let indiceAviso = 0;
+        let listaAvisos = [];
+
+        function iniciarAvisosRotativos() {
+            const base = [
+                { accion: 'Hallaron una', objeto: 'Cartuchera negra', lugar: 'FCSH' },
+                { accion: 'Reportaron un', objeto: 'Carné estudiantil', lugar: 'Biblioteca' }
+            ];
+
+            const guardados = JSON.parse(localStorage.getItem("reportes_polifind") || "[]");
+            const reales = guardados.map(r => ({
+                accion: r.estado && r.estado.toLowerCase().includes("perd") ? 'Perdieron un(a)' : 'Hallaron un(a)',
+                objeto: r.titulo,
+                lugar: r.lugar
+            }));
+
+            listaAvisos = [...reales, ...base];
+            actualizarTextoAviso();
+
+            if (listaAvisos.length > 1) {
+                setInterval(rotarSiguienteAviso, 4500);
+            }
+        }
+
+        function actualizarTextoAviso() {
+            if (listaAvisos.length === 0) return;
+            const item = listaAvisos[indiceAviso];
+            const contenedor = document.getElementById("alerta-contenido");
+            if (!contenedor) return;
+
+            contenedor.innerHTML = `
+                <span>🚨 <strong>¡Aviso de objeto!</strong> ${item.accion} <em>"${item.objeto}"</em> en ${item.lugar}. ¿Es tuya? Pregúntale a PolyTortu abajo 👇</span>
+                <button onclick="abrirChatConTexto('${item.objeto} en ${item.lugar}')" style="background: #28a745; color: white; border: none; padding: 3px 8px; border-radius: 4px; font-size: 11px; font-weight: bold; cursor: pointer; margin: 0;">Abrir chat</button>
+            `;
+        }
+
+        function rotarSiguienteAviso() {
+            const contenedor = document.getElementById("alerta-contenido");
+            if (!contenedor) return;
+
+            contenedor.classList.add("rotando");
+            setTimeout(() => {
+                indiceAviso = (indiceAviso + 1) % listaAvisos.length;
+                actualizarTextoAviso();
+                contenedor.classList.remove("rotando");
+            }, 350);
+        }
+
+        window.addEventListener("DOMContentLoaded", iniciarAvisosRotativos);
     </script>
 </head>
 <body class="body-menu">
 
-    <!-- 1. Tira superior de alerta -->
+    <!-- 1. Tira superior de alerta rotativa -->
     <div id="banner-alerta" style="position: fixed; top: 0; left: 0; width: 100%; background: #fff3cd; color: #856404; border-bottom: 1px solid #ffeeba; padding: 8px 16px; display: flex; justify-content: space-between; align-items: center; z-index: 100; box-shadow: 0 2px 6px rgba(0,0,0,0.06); font-size: 13px; box-sizing: border-box;">
-        <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
-            <span>🚨 <strong>¡Aviso de objeto!</strong> Hallaron una <em>"Cartuchera negra"</em> en FCSH. ¿Es tuya? Pregúntale a PolyTortu abajo 👇</span>
-            <button onclick="abrirChat()" style="background: #28a745; color: white; border: none; padding: 3px 8px; border-radius: 4px; font-size: 11px; font-weight: bold; cursor: pointer; margin: 0;">Abrir chat</button>
-        </div>
+        <div id="alerta-contenido"></div>
         <button onclick="document.getElementById('banner-alerta').style.display='none'" style="background: none; border: none; font-size: 16px; color: #856404; cursor: pointer; padding: 0 4px; line-height: 1;">✕</button>
     </div>
 
